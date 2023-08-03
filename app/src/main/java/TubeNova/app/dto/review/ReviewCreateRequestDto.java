@@ -10,12 +10,12 @@ public class ReviewCreateRequestDto {
     private String contents;
     private String channelName;
 
-    public static Review toReview(String title, String linkURL, String contents, String channelName){
+    public static Review toReview(ReviewCreateRequestDto dto){
         Review review = new Review().builder()
-                .title(title)
-                .linkURL(linkURL)
-                .contents(contents)
-                .channelName(channelName)
+                .title(dto.getTitle())
+                .linkURL(dto.getLinkURL())
+                .contents(dto.getContents())
+                .channelName(dto.getChannelName())
                 .build();
         return review;
     }

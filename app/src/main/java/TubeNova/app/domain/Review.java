@@ -1,9 +1,12 @@
 package TubeNova.app.domain;
 
+import TubeNova.app.dto.review.ReviewUpdateRequestDto;
 import jakarta.persistence.*;
 import lombok.Builder;
+import lombok.Data;
 import lombok.NoArgsConstructor;
 
+@Data
 @Entity
 @NoArgsConstructor
 public class Review extends BaseEntity {
@@ -43,4 +46,14 @@ public class Review extends BaseEntity {
         this.likes--;
     }
 
+    public void patch(Review review) {
+        if(review.title != null)
+            this.title = review.title;
+        if(review.linkURL != null)
+            this.linkURL = review.linkURL;
+        if(review.contents != null)
+            this.contents = review.contents;
+        if(review.channelName != null)
+            this.channelName = review.channelName;
+    }
 }
