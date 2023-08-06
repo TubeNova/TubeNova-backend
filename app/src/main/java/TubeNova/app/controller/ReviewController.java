@@ -3,6 +3,7 @@ package TubeNova.app.controller;
 import TubeNova.app.domain.Review;
 import TubeNova.app.dto.review.ReviewCreateRequestDto;
 import TubeNova.app.dto.review.ReviewUpdateRequestDto;
+import TubeNova.app.service.LikeService;
 import TubeNova.app.service.ReviewService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -12,9 +13,11 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/reviews")
 @RestController
 @RequiredArgsConstructor
+@CrossOrigin
 public class ReviewController {
 
     private final ReviewService reviewService;
+    private final LikeService likeService;
 
     //리뷰 생성
     @PostMapping("/posts")
@@ -42,6 +45,14 @@ public class ReviewController {
                 ResponseEntity.status(HttpStatus.OK).build() :
                 ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
     }
+
+//    //좋아요
+//    @PostMapping("/like")
+//    public @ResponseBody int like(Long reviewId, Long memberId) {
+//        int result = likeService.saveLike(reviewId,memberId);
+//        return result;
+//    }
+
 
 }
 

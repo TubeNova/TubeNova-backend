@@ -1,40 +1,63 @@
 package TubeNova.app.domain;
 
-import TubeNova.app.dto.review.ReviewUpdateRequestDto;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Builder;
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.DynamicInsert;
+import org.hibernate.annotations.DynamicUpdate;
 
-@Data
+import java.util.ArrayList;
+import java.util.List;
+
+@Getter
 @Entity
+@DynamicInsert
+@DynamicUpdate
 @NoArgsConstructor
+@Table(name = "Review")
 public class Review extends BaseEntity {
     @Id
     @Column(name = "review_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @Column(nullable = false)
+
+    @Column(nullable = false)   //리뷰 제목
     private String title;
-    @Column(nullable = false)
+
+    @Column(nullable = false)   //영상링크
     private String linkURL;
-    @Column(nullable = false)
+
+    @Column(nullable = false)   //내용
     private String contents;
-    @Column(nullable = false)
-    private String channelName;
-    @Column
+
+    @Column                     //별점
     private int rating = 0;
-    private Integer likes;
+
+    @Column                     //카테고리
+    private Category category;
+
+    private Integer likes = 0;  //좋아요 수
+
+    @JsonIgnore                             //@ManyToOne의 Fetch 타입을 Lazy로 사용했을 때 나타나는 문제점, 비어있는 객체를 Serialize 하려다 에러가 발생
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id")
     private Member member;
+
+    @OneToMany(mappedBy = "review", cascade = CascadeType.REMOVE, orphanRemoval = true, fetch = FetchType.LAZY)
+    private List<LikeEntity> like = new ArrayList<>();
+
+
     @Builder
-    public Review(String title, String linkURL, String contents, Member member, String channelName, int likes){
+    public Review(String title, String linkURL, String contents, int rating, Category category, Member member, int likes){
         this.title = title;
         this.linkURL = linkURL;
         this.contents = contents;
+        this.rating = rating;
+        this.category = category;
         this.member = member;
-        this.channelName = channelName;
         this.likes = likes;
     }
 
@@ -46,14 +69,16 @@ public class Review extends BaseEntity {
         this.likes--;
     }
 
+    //수정하기
     public void patch(Review review) {
         if(review.title != null)
             this.title = review.title;
-        if(review.linkURL != null)
-            this.linkURL = review.linkURL;
         if(review.contents != null)
             this.contents = review.contents;
-        if(review.channelName != null)
-            this.channelName = review.channelName;
+        if(review.category != null)
+            this.category = review.category;
+        this.rating = review.rating;
+        this.likes = review.likes;
+
     }
 }
