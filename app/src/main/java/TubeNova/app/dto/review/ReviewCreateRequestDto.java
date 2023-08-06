@@ -1,5 +1,6 @@
 package TubeNova.app.dto.review;
 
+import TubeNova.app.domain.Category;
 import TubeNova.app.domain.Review;
 import lombok.Getter;
 
@@ -9,13 +10,14 @@ public class ReviewCreateRequestDto {
     private String linkURL;
     private String contents;
     private String channelName;
-
-    public static Review toReview(String title, String linkURL, String contents, String channelName){
+    private String category;
+    public static Review toReview(ReviewCreateRequestDto requestDto){
         Review review = new Review().builder()
-                .title(title)
-                .linkURL(linkURL)
-                .contents(contents)
-                .channelName(channelName)
+                .title(requestDto.title)
+                .linkURL(requestDto.linkURL)
+                .contents(requestDto.contents)
+                .channelName(requestDto.channelName)
+                .category(Category.toCategory(requestDto.category))
                 .build();
         return review;
     }
