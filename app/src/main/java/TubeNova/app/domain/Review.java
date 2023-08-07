@@ -2,9 +2,13 @@ package TubeNova.app.domain;
 
 import jakarta.persistence.*;
 import lombok.Builder;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Entity
+@Getter
+@Setter
 @NoArgsConstructor
 public class Review extends BaseEntity {
     @Id
@@ -13,6 +17,8 @@ public class Review extends BaseEntity {
     private Long id;
     @Column(nullable = false)
     private String title;
+    @Column(nullable = false)
+    private String writer;
     @Column(nullable = false)
     private String linkURL;
     @Column(nullable = false)
