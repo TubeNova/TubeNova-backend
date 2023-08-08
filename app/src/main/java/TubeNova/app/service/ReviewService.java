@@ -24,8 +24,19 @@ public class ReviewService {
     }
 
     @Transactional
-    public List<ReviewHeaderDto> getList(){
-        List<Review> reviewList=reviewRepository.findTop10By(Sort.by(Sort.Direction.DESC, "likes"));
+    public List<ReviewHeaderDto> getWeekList(){
+        List<Review> reviewList=reviewRepository.findAll();
+        //List<Review> reviewList=reviewRepository.findTop10By(Sort.by(Sort.Direction.DESC, "likes"));
+        List<ReviewHeaderDto> reviewHeaderDtoList=new ArrayList<>();
+        for (Review review: reviewList){
+            reviewHeaderDtoList.add(ReviewHeaderDto.toReviewHeaderDto(review));
+        }
+        return reviewHeaderDtoList;
+    }
+    @Transactional
+    public List<ReviewHeaderDto> getDayList(){
+        List<Review> reviewList=reviewRepository.findTop10By();
+        //List<Review> reviewList=reviewRepository.findTop10By(Sort.by(Sort.Direction.DESC, "likes"));
         List<ReviewHeaderDto> reviewHeaderDtoList=new ArrayList<>();
         for (Review review: reviewList){
             reviewHeaderDtoList.add(ReviewHeaderDto.toReviewHeaderDto(review));

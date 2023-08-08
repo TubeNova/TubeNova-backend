@@ -39,9 +39,16 @@ public class ReviewController {
 
     }
 
-    @GetMapping("/popularity")
-    public List<ReviewHeaderDto> giveList(){
-        List<ReviewHeaderDto> reviewHeaderDtoList=reviewService.getList();
+    @GetMapping("/popularity/week")
+    public List<ReviewHeaderDto> giveWeekList(){
+        List<ReviewHeaderDto> reviewHeaderDtoList=reviewService.getWeekList();
+
+        return reviewHeaderDtoList;
+    }
+
+    @GetMapping("/popularity/day")
+    public List<ReviewHeaderDto> giveDayList(){
+        List<ReviewHeaderDto> reviewHeaderDtoList=reviewService.getDayList();
 
         return reviewHeaderDtoList;
     }
