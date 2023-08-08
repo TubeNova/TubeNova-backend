@@ -1,35 +1,34 @@
 package TubeNova.app.controller;
 
-
-import TubeNova.app.domain.Member;
-import TubeNova.app.repository.MemberRepository;
+import TubeNova.app.dto.member.MemberCreateResponseDto;
+import TubeNova.app.dto.member.MemberUpdateRequestDto;
+import TubeNova.app.dto.member.MemberUpdateResponseDto;
+import TubeNova.app.service.MemberService;
+import TubeNova.app.util.SecurityUtil;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.stereotype.Service;
+import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
 
-import java.util.List;
-
-@Slf4j
-@RestController
+@Controller("/member")
 @RequiredArgsConstructor
 public class MemberController {
-    private final MemberRepository ms;
+    private final MemberService memberService;
 
-    @PostMapping("/member")
-    public void create(){
-        Member member = new Member("azs@az", "password","dltmdwns");
-
-
-        ms.save(member);
+    @GetMapping("/me")  // 자신 객체 반환
+    public ResponseEntity<MemberCreateResponseDto> findMemberById() {
+        return ResponseEntity.ok(memberService.findMemberById(SecurityUtil.getCurrentMemberId()));
     }
 
-    @GetMapping("/member")
-    public List<Member> getMember(){
-        return ms.findAll();
+    @GetMapping("/{username}")
+    public ResponseEntity<MemberCreateResponseDto> findMemberByUsername(@PathVariable String username) {
+        return ResponseEntity.ok(memberService.findMemberByUsername(username));
     }
-
+    @PutMapping("/me/update")
+    public ResponseEntity<MemberUpdateResponseDto> updateMember(@RequestBody MemberUpdateRequestDto updateRequestDto){
+        return ResponseEntity.ok(memberService.updateMember(updateRequestDto));
+    }
 }

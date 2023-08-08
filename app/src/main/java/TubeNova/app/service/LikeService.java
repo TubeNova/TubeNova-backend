@@ -8,7 +8,6 @@ import TubeNova.app.repository.LikeRepository;
 import TubeNova.app.repository.MemberRepository;
 import TubeNova.app.repository.ReviewRepository;
 import jakarta.transaction.Transactional;
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -31,7 +30,7 @@ public class LikeService {
     //내가 좋아요를 했는지 체크
     public int findLike(Long reviewId, Long memberId) {
         // 저장된 DTO 가 없다면 0, 있다면 1
-        Optional<Object> findLike = likeRepository.findByReviewEntity_IdAndMemberEntity_Id(reviewId, memberId);
+        Optional<Object> findLike = likeRepository.findByReview_IdAndMember_Id(reviewId, memberId);
 
 
         if (findLike.isEmpty()){
