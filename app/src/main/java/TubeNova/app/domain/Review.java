@@ -1,6 +1,8 @@
 package TubeNova.app.domain;
 
 
+import TubeNova.app.dto.review.ReviewCreateResponseDto;
+import TubeNova.app.dto.review.ReviewDetailDto;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Builder;
@@ -67,6 +69,21 @@ public class Review extends BaseEntity {
 
     public void subLikes(){
         this.likes--;
+    }
+
+    public ReviewDetailDto toReviewDto(Review review, String writer){
+        ReviewDetailDto dto = new ReviewDetailDto().builder()
+                .title(review.getTitle())
+                .linkURL(review.getLinkURL())
+                .contents(review.getContents())
+                .rating(review.getRating())
+                .category(review.getCategory())
+                .reviewCreatedTime(review.getCreatedTime())
+                .likes(review.getLikes())
+                .writer(writer)
+                .build();
+
+        return dto;
     }
 
     //수정하기

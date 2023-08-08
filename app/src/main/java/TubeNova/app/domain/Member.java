@@ -4,6 +4,7 @@ import TubeNova.app.dto.member.MemberCreateResponseDto;
 import TubeNova.app.dto.member.MemberUpdateResponseDto;
 import jakarta.persistence.*;
 import lombok.Builder;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -14,6 +15,7 @@ import java.util.Collections;
 import java.util.List;
 
 @Entity
+@Getter
 @NoArgsConstructor
 @Table(name = "member")
 public class Member {

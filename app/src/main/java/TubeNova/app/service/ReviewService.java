@@ -4,6 +4,7 @@ import TubeNova.app.domain.Category;
 import TubeNova.app.domain.Member;
 import TubeNova.app.domain.Review;
 import TubeNova.app.dto.review.ReviewCreateRequestDto;
+import TubeNova.app.dto.review.ReviewDetailDto;
 import TubeNova.app.dto.review.ReviewUpdateRequestDto;
 import TubeNova.app.repository.MemberRepository;
 import TubeNova.app.repository.ReviewRepository;
@@ -78,7 +79,24 @@ public class ReviewService {
         List<Category> categories = currentMember.getCategories();
         return reviewRepository.findByCategories(categories, pageable);
     }
+
     public Page<Review> findReviewByCategory(String category, Pageable pageable){
         return reviewRepository.findByCategory(Category.toCategory(category), pageable);
+    }
+
+    public ReviewDetailDto getReviewDetail(Long id) {
+        Review review = reviewRepository.findById(id).orElse(null);
+        if (review == null) {
+            return null;
+        }
+
+        Member member = memberRepository.findById(review.getMember().getId()).orElse(null);
+        if (member == null) {
+            return null;
+        }
+
+        ReviewDetailDto rd = review.toReviewDto(review, member.getName());
+
+        return rd;
     }
 }

@@ -2,6 +2,7 @@ package TubeNova.app.controller;
 
 import TubeNova.app.domain.Review;
 import TubeNova.app.dto.review.ReviewCreateRequestDto;
+import TubeNova.app.dto.review.ReviewDetailDto;
 import TubeNova.app.dto.review.ReviewUpdateRequestDto;
 import TubeNova.app.service.LikeService;
 import TubeNova.app.service.ReviewService;
@@ -25,6 +26,15 @@ public class ReviewController {
         Review review = reviewService.createReview(requestDto);
         return (review != null) ?
                 ResponseEntity.status(HttpStatus.OK).body(review):
+                ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+    }
+
+    //리뷰 상세
+    @GetMapping("/{id}")
+    public ResponseEntity<Object> detailReview(@PathVariable Long id){
+        ReviewDetailDto reviewDetail = reviewService.getReviewDetail(id);
+        return (reviewDetail != null) ?
+                ResponseEntity.status(HttpStatus.OK).body(reviewDetail):
                 ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
     }
 
