@@ -28,19 +28,19 @@ public class LikeService {
     private ReviewRepository reviewRepository;
 
 
-//    //내가 좋아요를 했는지 체크
-//    public int findLike(Long reviewId, Long memberId) {
-//        // 저장된 DTO 가 없다면 0, 있다면 1
-//        Optional<Object> findLike = likeRepository.findByReviewEntity_IdAndMemberEntity_Id(reviewId, memberId);
-//
-//
-//        if (findLike.isEmpty()){
-//            return 0;
-//        }else {
-//
-//            return 1;
-//        }
-//    }
+    //내가 좋아요를 했는지 체크
+    public int findLike(Long reviewId, Long memberId) {
+        // 저장된 DTO 가 없다면 0, 있다면 1
+        Optional<Object> findLike = likeRepository.findByReviewEntity_IdAndMemberEntity_Id(reviewId, memberId);
+
+
+        if (findLike.isEmpty()){
+            return 0;
+        }else {
+
+            return 1;
+        }
+    }
 
     @Transactional
     public LikeEntity createLike(LikeRequestDto likeRequestDto) {

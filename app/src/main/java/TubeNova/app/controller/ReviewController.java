@@ -46,13 +46,6 @@ public class ReviewController {
                 ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
     }
 
-//    //좋아요
-//    @PostMapping("/like")
-//    public @ResponseBody int like(Long reviewId, Long memberId) {
-//        int result = likeService.saveLike(reviewId,memberId);
-//        return result;
-//    }
-
 
 }
 
