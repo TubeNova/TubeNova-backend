@@ -5,7 +5,42 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="d43697c5-ba64-4349-af7a-2d43d56e39a0" name="Changes" comment="Add DTO, Model, Controller">
+      <change afterPath="$PROJECT_DIR$/src/main/java/TubeNova/app/config/AppConfig.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/TubeNova/app/config/JwtSecurityConfig.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/TubeNova/app/config/RedisConfig.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/TubeNova/app/controller/AuthController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/TubeNova/app/dto/LoginDto.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/TubeNova/app/dto/member/MemberCreateRequestDto.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/TubeNova/app/dto/member/MemberCreateResponseDto.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/TubeNova/app/dto/member/MemberUpdateRequestDto.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/TubeNova/app/dto/member/MemberUpdateResponseDto.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/TubeNova/app/dto/token/TokenDto.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/TubeNova/app/dto/token/TokenRequestDto.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/TubeNova/app/jwt/JwtAccessDeniedHandler.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/TubeNova/app/jwt/JwtAuthenticationEntryPoint.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/TubeNova/app/jwt/JwtFilter.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/TubeNova/app/jwt/RefreshToken.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/TubeNova/app/jwt/TokenProvider.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/TubeNova/app/repository/RefreshTokenRepository.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/TubeNova/app/service/AuthService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/TubeNova/app/service/CustomUserDetailsService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/TubeNova/app/util/RedisUtil.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/TubeNova/app/util/SecurityUtil.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/build.gradle" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/TubeNova/app/config/SecurityConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/TubeNova/app/config/SecurityConfig.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/TubeNova/app/controller/MemberController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/TubeNova/app/controller/MemberController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/TubeNova/app/controller/ReviewController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/TubeNova/app/controller/ReviewController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/TubeNova/app/domain/Category.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/TubeNova/app/domain/Category.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/TubeNova/app/domain/Member.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/TubeNova/app/domain/Member.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/TubeNova/app/domain/Review.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/TubeNova/app/domain/Review.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/TubeNova/app/dto/review/ReviewCreateRequestDto.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/TubeNova/app/dto/review/ReviewCreateRequestDto.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/TubeNova/app/repository/MemberRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/TubeNova/app/repository/MemberRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/TubeNova/app/repository/ReviewRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/TubeNova/app/repository/ReviewRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/TubeNova/app/service/MemberService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/TubeNova/app/service/MemberService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/TubeNova/app/service/ReviewService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/TubeNova/app/service/ReviewService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/application.yaml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -22,7 +57,12 @@
       <state>
         <projects_view>
           <tree_state>
-            <expand />
+            <expand>
+              <path>
+                <item name="" type="6a2764b6:ExternalProjectsStructure$RootNode" />
+                <item name="app" type="f1a62948:ProjectNode" />
+              </path>
+            </expand>
             <select />
           </tree_state>
         </projects_view>
@@ -54,21 +94,44 @@
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
     "ASKED_ADD_EXTERNAL_FILES": "true",
+    "RequestMappingsPanelOrder0": "0",
+    "RequestMappingsPanelOrder1": "1",
+    "RequestMappingsPanelWidth0": "75",
+    "RequestMappingsPanelWidth1": "75",
     "RunOnceActivity.OpenProjectViewOnStart": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "WebServerToolWindowFactoryState": "false",
-    "last_opened_file_path": "C:/Users/최원웅/OneDrive/univ/TubeNova/app/TubeNova-backend/app/src/main/java/TubeNova/app/dto/review",
+    "last_opened_file_path": "C:/Users/dnd53/OneDrive/univ/멋사 발표/TubeNova/TubeNova-backend/app/src/main/java/TubeNova/app",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
     "node.js.selected.package.tslint": "(autodetect)",
+    "project.structure.last.edited": "Project",
+    "project.structure.proportion": "0.0",
+    "project.structure.side.proportion": "0.2",
     "spring.configuration.checksum": "6fd232251ba9e66f5bc7137b177b960b",
     "vue.rearranger.settings.migration": "true"
+  },
+  "keyToStringList": {
+    "DatabaseDriversLRU": [
+      "mysql"
+    ]
   }
 }]]></component>
+  <component name="ReactorSettings">
+    <option name="notificationShown" value="true" />
+  </component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\dnd53\OneDrive\univ\멋사 발표\TubeNova\TubeNova-backend\app\src\main\java\TubeNova\app" />
+      <recent name="C:\Users\dnd53\OneDrive\univ\멋사 발표\TubeNova\TubeNova-backend\app\src\main\java\TubeNova\app\dto" />
       <recent name="C:\Users\최원웅\OneDrive\univ\TubeNova\app\TubeNova-backend\app\src\main\java\TubeNova\app\dto\review" />
+    </key>
+    <key name="CopyClassDialog.RECENTS_KEY">
+      <recent name="TubeNova.app.service" />
+      <recent name="TubeNova.app.dto" />
+      <recent name="TubeNova.app.controller" />
+      <recent name="TubeNova.app.repository" />
     </key>
   </component>
   <component name="RunManager">
@@ -91,6 +154,9 @@
       <workItem from="1690442237973" duration="513000" />
       <workItem from="1690448155404" duration="2877000" />
       <workItem from="1690454557040" duration="5357000" />
+      <workItem from="1691144100626" duration="70000" />
+      <workItem from="1691144182142" duration="6667000" />
+      <workItem from="1691257139376" duration="22405000" />
     </task>
     <task id="LOCAL-00001" summary="Add DTO, Model, Controller">
       <created>1690459625052</created>
