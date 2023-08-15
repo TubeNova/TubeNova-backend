@@ -3,12 +3,12 @@ package TubeNova.app.dto.review;
 import TubeNova.app.domain.Category;
 import TubeNova.app.domain.Member;
 import TubeNova.app.domain.Review;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.time.LocalDateTime;
 
+@Setter
+@Getter
 @NoArgsConstructor
 public class ReviewDetailDto {
     private String title;
@@ -19,6 +19,7 @@ public class ReviewDetailDto {
     private String contents;
     private String writer;
     private Category category;
+    private int memberLike;
 
 
     @Builder

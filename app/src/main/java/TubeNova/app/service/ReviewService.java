@@ -4,8 +4,10 @@ import TubeNova.app.domain.Category;
 import TubeNova.app.domain.Member;
 import TubeNova.app.domain.Review;
 import TubeNova.app.dto.review.ReviewCreateRequestDto;
+import TubeNova.app.dto.review.ReviewCreateResponseDto;
 import TubeNova.app.dto.review.ReviewDetailDto;
 import TubeNova.app.dto.review.ReviewUpdateRequestDto;
+import TubeNova.app.repository.LikeRepository;
 import TubeNova.app.repository.MemberRepository;
 import TubeNova.app.repository.ReviewRepository;
 import lombok.RequiredArgsConstructor;
@@ -24,6 +26,7 @@ public class ReviewService {
     private final MemberRepository memberRepository;
     private final MemberService memberService;
     private final ReviewRepository reviewRepository;
+    private final LikeRepository likeRepository;
 
     public Review createReview(ReviewCreateRequestDto requestDto) {
         Member member = memberRepository.findById(requestDto.getId()).orElse(null);
@@ -98,5 +101,24 @@ public class ReviewService {
         ReviewDetailDto rd = review.toReviewDto(review, member.getName());
 
         return rd;
+    }
+
+    public int findLike(Long id, Long memberId) {
+        Optional<Object> findLike = likeRepository.findByReview_IdAndMember_Id(id, memberId);
+
+
+        if (findLike.isEmpty()){
+            return 0;
+        }else {
+
+            return 1;
+        }
+    }
+
+    public Page<Review> searchReviews(String keyword, Pageable pageable) {
+        return reviewRepository.findByTitleContaining(keyword, pageable);
+
+
+
     }
 }

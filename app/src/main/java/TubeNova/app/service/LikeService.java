@@ -27,20 +27,6 @@ public class LikeService {
     private ReviewRepository reviewRepository;
 
 
-    //내가 좋아요를 했는지 체크
-    public int findLike(Long reviewId, Long memberId) {
-        // 저장된 DTO 가 없다면 0, 있다면 1
-        Optional<Object> findLike = likeRepository.findByReview_IdAndMember_Id(reviewId, memberId);
-
-
-        if (findLike.isEmpty()){
-            return 0;
-        }else {
-
-            return 1;
-        }
-    }
-
     @Transactional
     public LikeEntity createLike(LikeRequestDto likeRequestDto) {
 
@@ -53,7 +39,7 @@ public class LikeService {
         }
 
         // 이미 좋아요되어있으면 에러 반환
-        if (likeRepository.findByMemberAndReview(member, review).isPresent()){
+        if (likeRepository.findByReview_IdAndMember_Id(member.getId(),review.getId()).isPresent()){
             //TODO 409에러로 변경
             return null;
         }
@@ -81,7 +67,7 @@ public class LikeService {
 
         if (member == null || review == null) return null;
 
-        LikeEntity like = (LikeEntity) likeRepository.findByMemberAndReview(member, review).orElse(null);
+        LikeEntity like = (LikeEntity) likeRepository.findByReview_IdAndMember_Id(member.getId(), review.getId()).orElse(null);
 
         if (like == null) return null;
 
