@@ -1,6 +1,8 @@
 package TubeNova.app.repository;
 
 import TubeNova.app.domain.Member;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -9,5 +11,7 @@ import java.util.Optional;
 @Repository
 public interface MemberRepository extends JpaRepository<Member,Long> {
     Optional<Member> findByEmail(String email);
+    Optional<Member> findByName(String name);
     boolean existsByEmail(String email);
+    Page<Member> findByNameContaining(String keyword, Pageable pageable);
 }

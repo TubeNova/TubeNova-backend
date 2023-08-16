@@ -3,11 +3,14 @@ package TubeNova.app.service;
 import TubeNova.app.domain.Category;
 import TubeNova.app.domain.Member;
 import TubeNova.app.dto.member.MemberCreateResponseDto;
+import TubeNova.app.dto.member.MemberDetailDto;
 import TubeNova.app.dto.member.MemberUpdateRequestDto;
 import TubeNova.app.dto.member.MemberUpdateResponseDto;
 import TubeNova.app.repository.MemberRepository;
 import TubeNova.app.util.SecurityUtil;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -32,6 +35,7 @@ public class MemberService {
                 .map(Member::of)
                 .orElseThrow(() -> new RuntimeException("유저 정보가 없습니다."));
     }
+    @Transactional
     public MemberUpdateResponseDto updateMember(MemberUpdateRequestDto updateRequestDto) {
         Optional<Member> optionalMember = getCurrentMember();
         String originalPassword = updateRequestDto.getOriginalPassword();
@@ -51,6 +55,13 @@ public class MemberService {
             return Member.memberToUpdateResponseDto(member);
         }
         return null;
+    }
+    public MemberCreateResponseDto findMemberByName(String name){
+        return Member.of(memberRepository.findByName(name).get());
+    }
+    public Page<MemberDetailDto> searchMemberByKeyword(String keyword, Pageable pageable){
+        Page<Member> pageMembers = memberRepository.findByNameContaining(keyword, pageable);
+        return Member.memberToMemberDetailPageDto(pageMembers);
     }
     public Optional<Member> getCurrentMember(){
         return memberRepository.findById(SecurityUtil.getCurrentMemberId());

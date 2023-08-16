@@ -1,11 +1,13 @@
 package TubeNova.app.domain;
 
 import TubeNova.app.dto.member.MemberCreateResponseDto;
+import TubeNova.app.dto.member.MemberDetailDto;
 import TubeNova.app.dto.member.MemberUpdateResponseDto;
 import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
@@ -80,13 +82,19 @@ public class Member {
     }
 
     public static MemberCreateResponseDto of(Member member) {
-        return new MemberCreateResponseDto(member.email, member.name, member.authority.toString());
+        return new MemberCreateResponseDto(member.email, member.name, Category.toStringList(member.favoriteCategory), member.authority.toString());
     }
 
     public static MemberUpdateResponseDto memberToUpdateResponseDto(Member member){
         return new MemberUpdateResponseDto(member.email, member.name, Category.toStringList(member.favoriteCategory));
     }
-
+    public static Page<MemberDetailDto> memberToMemberDetailPageDto(Page<Member> pageMembers){
+        Page<MemberDetailDto> pageMemberDetailDtos = pageMembers.map(m-> MemberDetailDto.builder()
+                .id(m.id.toString())
+                .name(m.name)
+                .build());
+        return pageMemberDetailDtos;
+    }
     public static User memberToUser(Member member){
         GrantedAuthority grantedAuthority = new SimpleGrantedAuthority(member.authority.toString());
         return new User(
