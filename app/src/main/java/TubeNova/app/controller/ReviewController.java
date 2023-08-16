@@ -5,7 +5,9 @@ import TubeNova.app.domain.Review;
 import TubeNova.app.dto.review.ReviewCreateRequestDto;
 import TubeNova.app.dto.review.ReviewUpdateRequestDto;
 import TubeNova.app.dto.review.ReviewHeaderDto;
+import TubeNova.app.dto.review.ReviewDetailDto;
 import TubeNova.app.service.ReviewService;
+import TubeNova.app.util.SecurityUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -14,10 +16,14 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import org.springframework.data.domain.Sort;
-import TubeNova.app.dto.review.ReviewDetailDto;
+
 import TubeNova.app.service.LikeService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+
+
+import java.util.List;
+
 
 @RequestMapping("/reviews")
 @RestController
@@ -26,7 +32,6 @@ import org.springframework.http.ResponseEntity;
 public class ReviewController {
 
     private final ReviewService reviewService;
-    private final LikeService likeService;
 
     //리뷰 생성
     @PostMapping("/posts")
@@ -107,16 +112,18 @@ public class ReviewController {
     }
 
     //리뷰 상세
-    @GetMapping("/{id}")
+    @GetMapping("/details/{id}")
     public ResponseEntity<Object> detailReview(@PathVariable Long id){
         ReviewDetailDto reviewDetail = reviewService.getReviewDetail(id);
+        int like = reviewService.findLike(id, SecurityUtil.getCurrentMemberId());   //좋아요 했으면 1, 아니면 0
+        reviewDetail.setMemberLike(like);
         return (reviewDetail != null) ?
                 ResponseEntity.status(HttpStatus.OK).body(reviewDetail):
                 ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
     }
 
     //리뷰 수정
-    @PatchMapping("/updates/{id}")
+    @PutMapping("/updates/{id}")
     public ResponseEntity<Object> updateReview(@PathVariable Long id, @RequestBody ReviewUpdateRequestDto requestDto){
         Review review = reviewService.updateReview(id, requestDto);
         return (review != null) ?
@@ -133,6 +140,19 @@ public class ReviewController {
                 ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
     }
 
+    @GetMapping("/{category}")
+    public Page<Review> findReviewByCategory(@PathVariable("category") String category,
+                                             @PageableDefault(size = 20, sort = "id", direction = Sort.Direction.DESC) Pageable pageable){
+        return reviewService.findReviewByCategory(category, pageable);
+    }
+
+    //리뷰 검색
+    @GetMapping("/search")
+    public Page<Review> searchReview(@RequestParam(value = "keyword") String keyword,
+                                                      @PageableDefault(size = 20, sort = "id", direction = Sort.Direction.DESC) Pageable pageable){
+        Page<Review> reviews = reviewService.searchReviews(keyword, pageable);
+        return reviews;
+    }
 
 }
 

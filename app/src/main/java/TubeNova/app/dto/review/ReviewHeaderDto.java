@@ -37,4 +37,5 @@ public class ReviewHeaderDto {
         this.reviewCreatedTime=reviewCreatedTime;
         this.likes=likes;
     }
+
 }

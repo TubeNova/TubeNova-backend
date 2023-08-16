@@ -21,4 +21,6 @@ public interface ReviewRepository extends JpaRepository<Review, Long> {
     @Query("select r from Review r where r.category in :categories")
     Page<Review> findByCategories(@Param("categories")List<Category> categories, Pageable pageable);
     Page<Review> findByCategory(Category category, Pageable pageable);
+
+    Page<Review> findByTitleContaining(String keyword, Pageable pageable);  //findBy'Column'Containing 을 쓰면 컬럼내에 해당된 것들을 찾아준다.
 }
