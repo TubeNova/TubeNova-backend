@@ -54,9 +54,10 @@ public class Review extends BaseEntity {
 
 
     @Builder
-    public Review(String title, String linkURL, String contents, int rating, Category category, Member member, int likes){
+    public Review(String title, String linkURL, String writer, String contents, int rating, Category category, Member member, int likes){
         this.title = title;
         this.linkURL = linkURL;
+        this.writer = writer;
         this.contents = contents;
         this.rating = rating;
         this.category = category;
