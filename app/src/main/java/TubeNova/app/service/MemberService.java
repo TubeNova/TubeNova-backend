@@ -32,27 +32,27 @@ public class MemberService {
                 .map(Member::of)
                 .orElseThrow(() -> new RuntimeException("유저 정보가 없습니다."));
     }
-     public MemberUpdateResponseDto updateMember(MemberUpdateRequestDto updateRequestDto) {
-         Optional<Member> optionalMember = getCurrentMember();
-         String originalPassword = updateRequestDto.getOriginalPassword();
-         if (optionalMember.isPresent()) {
-             Member member = optionalMember.get();
-             member.setName(updateRequestDto.getName());
+    public MemberUpdateResponseDto updateMember(MemberUpdateRequestDto updateRequestDto) {
+        Optional<Member> optionalMember = getCurrentMember();
+        String originalPassword = updateRequestDto.getOriginalPassword();
+        if (optionalMember.isPresent()) {
+            Member member = optionalMember.get();
+            member.setName(updateRequestDto.getName());
 
-             System.out.println("original Password : " + member.getPassword());
+            System.out.println("original Password : " + member.getPassword());
 
-             member = authService.changePassword(member, originalPassword, updateRequestDto.getUpdatedPassword());
-             List<Category> updatedCategories = Category.toCategories(updateRequestDto.getCategories());
-             member.setFavoriteCategory(updatedCategories);
-             member = memberRepository.save(member);
+            member = authService.changePassword(member, originalPassword, updateRequestDto.getUpdatedPassword());
+            List<Category> updatedCategories = Category.toCategories(updateRequestDto.getCategories());
+            member.setFavoriteCategory(updatedCategories);
+            member = memberRepository.save(member);
 
-             System.out.println("updated Password : " + member.getPassword());
+            System.out.println("updated Password : " + member.getPassword());
 
-             return Member.memberToUpdateResponseDto(member);
-         }
-         return null;
-     }
-     public Optional<Member> getCurrentMember(){
+            return Member.memberToUpdateResponseDto(member);
+        }
+        return null;
+    }
+    public Optional<Member> getCurrentMember(){
         return memberRepository.findById(SecurityUtil.getCurrentMemberId());
-     }
+    }
 }

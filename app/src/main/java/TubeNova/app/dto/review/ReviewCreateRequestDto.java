@@ -1,24 +1,34 @@
 package TubeNova.app.dto.review;
 
 import TubeNova.app.domain.Category;
+import TubeNova.app.domain.Member;
 import TubeNova.app.domain.Review;
 import lombok.Getter;
+
+import java.time.LocalDateTime;
+import java.util.Optional;
 
 @Getter
 public class ReviewCreateRequestDto {
     private String title;
     private String linkURL;
     private String contents;
-    private String channelName;
-    private String category;
-    public static Review toReview(ReviewCreateRequestDto requestDto){
+    private int rating;
+    private Category category;
+    private LocalDateTime createdTime;  //따로 받지 않아도 될거 같음
+    private Long id;
+
+    public static Review toReview(ReviewCreateRequestDto dto, Member member){
+
         Review review = new Review().builder()
-                .title(requestDto.title)
-                .linkURL(requestDto.linkURL)
-                .contents(requestDto.contents)
-                .channelName(requestDto.channelName)
-                .category(Category.toCategory(requestDto.category))
+                .title(dto.getTitle())
+                .linkURL(dto.getLinkURL())
+                .contents(dto.getContents())
+                .rating(dto.getRating())
+                .category(dto.getCategory())
+                .member(member)
                 .build();
         return review;
     }
 }
+
