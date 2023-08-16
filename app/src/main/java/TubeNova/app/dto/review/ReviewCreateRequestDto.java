@@ -13,6 +13,7 @@ public class ReviewCreateRequestDto {
     private String title;
     private String linkURL;
     private String contents;
+    private String writer;
     private int rating;
     private Category category;
     private LocalDateTime createdTime;  //따로 받지 않아도 될거 같음
@@ -23,6 +24,7 @@ public class ReviewCreateRequestDto {
         Review review = new Review().builder()
                 .title(dto.getTitle())
                 .linkURL(dto.getLinkURL())
+                .writer(member.getName())
                 .contents(dto.getContents())
                 .rating(dto.getRating())
                 .category(dto.getCategory())
