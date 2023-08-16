@@ -2,22 +2,22 @@
 #DB Setting
 spring:
     datasource:
-        url: "jdbc:mysql://localhost/tubenova"
+        url: "jdbc:mariadb://svc.sel3.cloudtype.app:32389/tubenova"
         username: "root"
-        password: "0000"
-        driver-class-name: com.mysql.cj.jdbc.Driver
+        password: "1234"
+        driver-class-name: org.mariadb.jdbc.Driver
 ---
 
 #Jpa Setting
 spring:
     jpa:
         hibernate:
-            ddl-auto: update
+            ddl-auto: create
         properties:
             hibernate:
                 format_sql: true
                 show_sql: true
-                dialect: org.hibernate.dialect.MySQL8Dialect
+                dialect: org.hibernate.dialect.MariaDBDialect
 
 ---
 spring:
