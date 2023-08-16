@@ -1,15 +1,11 @@
 package TubeNova.app.controller;
 
-import TubeNova.app.domain.Member;
 import TubeNova.app.domain.Review;
 import TubeNova.app.dto.review.ReviewCreateRequestDto;
-import TubeNova.app.dto.review.ReviewCreateResponseDto;
 import TubeNova.app.dto.review.ReviewDetailDto;
 import TubeNova.app.dto.review.ReviewUpdateRequestDto;
-import TubeNova.app.service.LikeService;
 import TubeNova.app.service.ReviewService;
 import TubeNova.app.util.SecurityUtil;
-import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -17,11 +13,8 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
-import java.security.Principal;
-import java.util.List;
 
 @RequestMapping("/reviews")
 @RestController
@@ -30,7 +23,6 @@ import java.util.List;
 public class ReviewController {
 
     private final ReviewService reviewService;
-    private final LikeService likeService;
 
     //리뷰 생성
     @PostMapping("/posts")
@@ -88,7 +80,6 @@ public class ReviewController {
         Page<Review> reviews = reviewService.searchReviews(keyword, pageable);
         return reviews;
     }
-
 
 }
 

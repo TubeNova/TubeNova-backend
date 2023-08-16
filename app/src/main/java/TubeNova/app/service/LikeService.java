@@ -71,7 +71,7 @@ public class LikeService {
 
         if (like == null) return null;
 
-//        reviewRepository.subLike(review);
+        likeRepository.delete(like);
         review.subLikes();
         reviewRepository.save(review);
         return like;
