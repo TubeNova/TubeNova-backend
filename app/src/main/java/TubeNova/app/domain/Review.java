@@ -95,7 +95,6 @@ public class Review extends BaseEntity {
         if(review.category != null)
             this.category = review.category;
         this.rating = review.rating;
-        this.likes = review.likes;
 
     }
 }

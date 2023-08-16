@@ -46,12 +46,14 @@ public class ReviewService {
 
         //1. 수정용 엔티티 생성
         Review review = requestDto.toReview(requestDto);
+        log.info("review -> {}",review.getId());
 
         //2. 대상 엔티티 찾기
         Review target = reviewRepository.findById(id).orElse(null);
+        log.info("target -> {}", target.getId());
 
         //잘못된 요청 처리(대상이 없거나 id가 다른 경우)
-        if (target == null || id != review.getId()) {
+        if (target == null || id != target.getId()) {
             log.info("잘못된 요청! id: {}, review: {}", id, review.toString());
             return null;
         }

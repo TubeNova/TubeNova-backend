@@ -53,7 +53,7 @@ public class ReviewController {
     }
 
     //리뷰 수정
-    @PatchMapping("/updates/{id}")
+    @PutMapping("/updates/{id}")
     public ResponseEntity<Object> updateReview(@PathVariable Long id, @RequestBody ReviewUpdateRequestDto requestDto){
         Review review = reviewService.updateReview(id, requestDto);
         return (review != null) ?
