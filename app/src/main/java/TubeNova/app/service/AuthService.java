@@ -1,4 +1,4 @@
-package TubeNova.app.service;
+package TubeNova.app.repository.service;
 
 import TubeNova.app.domain.Member;
 import TubeNova.app.dto.LoginDto;
@@ -28,7 +28,7 @@ public class AuthService {
     private final TokenProvider tokenProvider;
     private final RefreshTokenRepository refreshTokenRepository;
     private final BCryptPasswordEncoder passwordEncoder;
-    private final RedisUtil redisUtil;
+    //private final RedisUtil redisUtil;
 
     @Transactional
     public MemberCreateResponseDto memberSignup(MemberCreateRequestDto memberCreateRequestDto) {
@@ -80,7 +80,7 @@ public class AuthService {
         refreshTokenRepository.deleteRefreshTokenByKey(username);
 
         // 레디스에 accessToken 사용못하도록 등록
-        redisUtil.setBlackList(accessToken, "accessToken", 30);
+  //      redisUtil.setBlackList(accessToken, "accessToken", 30);
         return "logged out";
     }
 
