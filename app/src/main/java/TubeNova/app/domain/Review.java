@@ -1,25 +1,24 @@
 package TubeNova.app.domain;
 
-
-import TubeNova.app.dto.review.ReviewCreateResponseDto;
-import TubeNova.app.dto.review.ReviewDetailDto;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import jakarta.persistence.*;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
 
 import java.util.ArrayList;
 import java.util.List;
+import TubeNova.app.dto.review.ReviewCreateResponseDto;
+import TubeNova.app.dto.review.ReviewDetailDto;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import jakarta.persistence.*;
 
-@Getter
 @Entity
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
+@Table(name = "review")
 @DynamicInsert
 @DynamicUpdate
-@NoArgsConstructor
-@Table(name = "Review")
 public class Review extends BaseEntity {
     @Id
     @Column(name = "review_id")
@@ -28,6 +27,8 @@ public class Review extends BaseEntity {
 
     @Column(nullable = false)   //리뷰 제목
     private String title;
+    @Column(nullable = false)
+    private String writer;
 
     @Column(nullable = false)   //영상링크
     private String linkURL;
@@ -95,6 +96,7 @@ public class Review extends BaseEntity {
         if(review.category != null)
             this.category = review.category;
         this.rating = review.rating;
+        this.likes = review.likes;
 
     }
 }

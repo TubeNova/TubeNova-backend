@@ -3,6 +3,7 @@ package TubeNova.app.controller;
 import TubeNova.app.domain.Review;
 import TubeNova.app.dto.review.ReviewCreateRequestDto;
 import TubeNova.app.dto.review.ReviewDetailDto;
+import TubeNova.app.dto.review.ReviewHeaderDto;
 import TubeNova.app.dto.review.ReviewUpdateRequestDto;
 import TubeNova.app.service.ReviewService;
 import TubeNova.app.util.SecurityUtil;
@@ -13,7 +14,10 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 
 @RequestMapping("/reviews")
@@ -33,6 +37,70 @@ public class ReviewController {
                 ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
     }
 
+    @GetMapping("/member/{member_id}")
+    public Page getMemberReviewList(@PathVariable("member_id") Long member_id,
+                                    @PageableDefault(size = 10, sort = "createdTime", direction = Sort.Direction.DESC)
+                                            Pageable pageable, Model model){
+        Page<ReviewHeaderDto> reviewList=reviewService.getMemberReviewList(member_id, pageable);
+        int blockLimit=10;
+        int startPage=(((int)(Math.ceil((double) pageable.getPageNumber()/blockLimit)))-1)
+                * blockLimit+1;
+        int endPage=((startPage+blockLimit-1)<reviewList.getTotalPages())
+                ? startPage + blockLimit -1 : reviewList.getTotalPages();
+
+        model.addAttribute("reviewList",reviewList);
+        model.addAttribute("startPage", startPage);
+        model.addAttribute("endPage",endPage);
+        return reviewList;
+
+    }
+
+    @GetMapping("/latest")
+    public Page getLatsetList(@PageableDefault(size = 10, sort = "createdTime", direction = Sort.Direction.DESC)
+                                      Pageable pageable, Model model){
+        Page<ReviewHeaderDto> reviewList=reviewService.getLatestList(pageable);
+        int blockLimit=10;
+        int startPage=(((int)(Math.ceil((double) pageable.getPageNumber()/blockLimit)))-1)
+                * blockLimit+1;
+        int endPage=((startPage+blockLimit-1)<reviewList.getTotalPages())
+                ? startPage + blockLimit -1 : reviewList.getTotalPages();
+
+        model.addAttribute("reviewList",reviewList);
+        model.addAttribute("startPage", startPage);
+        model.addAttribute("endPage",endPage);
+        return reviewList;
+
+    }
+
+    @GetMapping("/latest/{category}")
+    public Page getLatestCategoryList(@PathVariable("category") String category,
+                                      @PageableDefault(size = 10, sort = "createdTime", direction = Sort.Direction.DESC) Pageable pageable, Model model){
+        Page<ReviewHeaderDto> reviewList=reviewService.getLatestCateList(category, pageable);
+        int blockLimit=10;
+        int startPage=(((int)(Math.ceil((double) pageable.getPageNumber()/blockLimit)))-1)
+                * blockLimit+1;
+        int endPage=((startPage+blockLimit-1)<reviewList.getTotalPages())
+                ? startPage + blockLimit -1 : reviewList.getTotalPages();
+
+        model.addAttribute("reviewList",reviewList);
+        model.addAttribute("startPage", startPage);
+        model.addAttribute("endPage",endPage);
+        return reviewList;
+    }
+
+    @GetMapping("/weekly-popularity")
+    public List<ReviewHeaderDto> getWeekList(){
+        List<ReviewHeaderDto> reviewHeaderDtoList=reviewService.getWeekList();
+
+        return reviewHeaderDtoList;
+    }
+
+    @GetMapping("/weekly-popularity/{category}")
+    public List<ReviewHeaderDto> getWeekCategoryList(@PathVariable("category") String category){
+        List<ReviewHeaderDto> reviewHeaderDtoList=reviewService.getWeekCategoryList(category);
+
+        return reviewHeaderDtoList;
+    }
     //리뷰 상세
     @GetMapping("/details/{id}")
     public ResponseEntity<Object> detailReview(@PathVariable Long id){
