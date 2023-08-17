@@ -1,6 +1,7 @@
 package TubeNova.app.service;
 
 import TubeNova.app.domain.Category;
+import TubeNova.app.domain.LikeEntity;
 import TubeNova.app.domain.Member;
 import TubeNova.app.domain.Review;
 import TubeNova.app.dto.review.*;
@@ -80,6 +81,13 @@ public class ReviewService {
     public Page<ReviewHeaderDto> findMyReviews(Pageable pageable){
         Page<Review> pageReviews = reviewRepository.findReviewByMemberId(SecurityUtil.getCurrentMemberId(), pageable);
         return Review.pageToHeaderDto(pageReviews);
+    }
+
+    public Page<Review> getLikedReviews(Pageable pageable){
+        Member me = memberService.getCurrentMember().get();
+        List<LikeEntity> likeList = likeRepository.findByMember(me);
+        Page<Review> reviews = reviewRepository.findByLikes(likeList, pageable);
+        return reviews;
     }
     public Review findReviewById(Long id){
         Optional<Review> optionalReview = reviewRepository.findById(id);
