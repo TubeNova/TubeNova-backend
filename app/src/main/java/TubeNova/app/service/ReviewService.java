@@ -82,13 +82,18 @@ public class ReviewService {
         Page<Review> pageReviews = reviewRepository.findReviewByMemberId(SecurityUtil.getCurrentMemberId(), pageable);
         return Review.pageToHeaderDto(pageReviews);
     }
-
+/*
     public Page<Review> getLikedReviews(Pageable pageable){
         Member me = memberService.getCurrentMember().get();
         List<LikeEntity> likeList = likeRepository.findByMember(me);
-        Page<Review> reviews = reviewRepository.findByLikes(likeList, pageable);
+        for(LikeEntity like:likeList){
+            reviewRepository.findByLike(like)
+        }
+        //Page<Review> reviews = reviewRepository.findByLike(likeList, pageable);
         return reviews;
     }
+
+ */
     public Review findReviewById(Long id){
         Optional<Review> optionalReview = reviewRepository.findById(id);
         if(optionalReview.isPresent()){
@@ -131,6 +136,9 @@ public class ReviewService {
                         ,review.getRating()
                         ,review.getCreatedTime()
                         ,review.getLikes()
+                        ,review.getVideoImageUrl()
+                        ,review.getVideoTitle()
+                        ,review.getChannel()
                 ));
         return reviewHeaderDtos;
     }
@@ -152,7 +160,11 @@ public class ReviewService {
                         ,review.getLinkURL()
                         ,review.getRating()
                         ,review.getCreatedTime()
-                        ,review.getLikes()));
+                        ,review.getLikes()
+                        ,review.getVideoImageUrl()
+                        ,review.getVideoTitle()
+                        ,review.getChannel()
+                ));
         return reviewHeaderDtos;
     }
 
@@ -171,7 +183,11 @@ public class ReviewService {
                         ,review.getLinkURL()
                         ,review.getRating()
                         ,review.getCreatedTime()
-                        ,review.getLikes()));
+                        ,review.getLikes()
+                        ,review.getVideoImageUrl()
+                        ,review.getVideoTitle()
+                        ,review.getChannel()
+                ));
         return reviewHeaderDtos;
     }
 

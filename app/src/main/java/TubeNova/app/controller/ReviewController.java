@@ -42,10 +42,13 @@ public class ReviewController {
     public Page<ReviewHeaderDto> getMyReviews(@PageableDefault(size = 10, sort = "createdTime", direction = Sort.Direction.DESC) Pageable pageable){
         return reviewService.findMyReviews(pageable);
     }
+    /*
     @GetMapping("/liked")
     public Page<ReviewHeaderDto> getLikedReviews(@PageableDefault(size = 10, sort = "createdTime", direction = Sort.Direction.DESC) Pageable pageable){
         return Review.pageToHeaderDto(reviewService.getLikedReviews(pageable));
     }
+
+     */
     @GetMapping("/member/{member_id}")
     public Page getMemberReviewList(@PathVariable("member_id") Long member_id,
                                     @PageableDefault(size = 10, sort = "createdTime", direction = Sort.Direction.DESC)

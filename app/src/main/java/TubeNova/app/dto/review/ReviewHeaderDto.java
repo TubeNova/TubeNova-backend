@@ -19,6 +19,9 @@ public class ReviewHeaderDto {
     private Category category;
     private LocalDateTime reviewCreatedTime;
     private int likes;
+    private String videoImageUrl;       //영상 썸네일
+    private String videoTitle;          //영상 제목
+    private String channel;             //채널명
 
     public static ReviewHeaderDto toReviewHeaderDto(Review review){
         ReviewHeaderDto reviewHeaderDto=new ReviewHeaderDto();
@@ -29,11 +32,17 @@ public class ReviewHeaderDto {
         reviewHeaderDto.setRating(review.getRating());
         reviewHeaderDto.setReviewCreatedTime(review.getCreatedTime());
         reviewHeaderDto.setLikes(review.getLikes());
+        reviewHeaderDto.setVideoImageUrl(review.getVideoImageUrl());
+        reviewHeaderDto.setVideoTitle(review.getVideoTitle());
+        reviewHeaderDto.setChannel(review.getChannel());
 
         return reviewHeaderDto;
     }
     @Builder
-    public ReviewHeaderDto(Long id,String title, String writer, Category category, String linkURL, int rating, LocalDateTime reviewCreatedTime, int likes){
+    public ReviewHeaderDto( Long id,String title, String writer, Category category, String linkURL, int rating, LocalDateTime reviewCreatedTime, int likes, String videoImageUrl, String videoTitle, String channel){
+        this.videoImageUrl = videoImageUrl;
+        this.videoTitle = videoTitle;
+        this.channel = channel;
         this.id = id;
         this.title=title;
         this.writer=writer;
