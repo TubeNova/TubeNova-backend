@@ -19,7 +19,7 @@ public class ReviewDetailDto {
     private String contents;
     private String writer;
     private Category category;
-    private int memberLike;
+    private boolean memberLike;
 
 
     @Builder
