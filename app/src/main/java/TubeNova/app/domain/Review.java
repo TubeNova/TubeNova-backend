@@ -89,7 +89,21 @@ public class Review extends BaseEntity {
     public void subLikes(){
         this.likes--;
     }
+    
+    public ReviewDetailDto toReviewDto(){
+        ReviewDetailDto dto = new ReviewDetailDto().builder()
+                .title(title)
+                .linkURL(linkURL)
+                .contents(contents)
+                .rating(rating)
+                .category(category)
+                .reviewCreatedTime(getCreatedTime())
+                .likes(likes)
+                .writer(writer)
+                .build();
 
+        return dto;
+    }
     public ReviewDetailDto toReviewDto(Review review, String writer){
         ReviewDetailDto dto = new ReviewDetailDto().builder()
                 .videoImageUrl(review.getVideoImageUrl())
