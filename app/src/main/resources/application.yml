@@ -1,14 +1,14 @@
 spring:
   datasource:
-    url: "jdbc:mariadb://${DB_HOST}:${PORT}/tubenova"
-    username: "${USERNAME}"
-    password: "${PASSWORD}"
+    url: "jdbc:mariadb://svc.sel3.cloudtype.app:32389/tubenova"
+    username: "root"
+    password: "1234"
     driver-class-name: org.mariadb.jdbc.Driver
 ---
 spring:
   jpa:
     hibernate:
-      ddl-auto: create
+      ddl-auto: update
     properties:
       hibernate:
         format_sql: true

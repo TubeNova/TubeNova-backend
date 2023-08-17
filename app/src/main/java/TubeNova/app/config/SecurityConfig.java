@@ -26,8 +26,8 @@ public class SecurityConfig {
                 .headers(headers -> headers.frameOptions(frameOptionsConfig -> frameOptionsConfig.sameOrigin()))
                 .sessionManagement(sessionManagement -> sessionManagement.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeRequests(
-                        request->request.requestMatchers("/auth/**").permitAll()
-                                .requestMatchers("/member/**").hasAnyRole("USER")
+                        request->request.requestMatchers("/auth/").permitAll()
+                                .requestMatchers("/member/").hasAnyRole("USER")
                                 .requestMatchers("/").permitAll()
                                 .anyRequest().permitAll()
                 )
