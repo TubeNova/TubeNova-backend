@@ -13,6 +13,7 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
@@ -21,6 +22,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Service
@@ -82,18 +84,25 @@ public class ReviewService {
         Page<Review> pageReviews = reviewRepository.findReviewByMemberId(SecurityUtil.getCurrentMemberId(), pageable);
         return Review.pageToHeaderDto(pageReviews);
     }
-/*
-    public Page<Review> getLikedReviews(Pageable pageable){
+
+    public Page<ReviewHeaderDto> getLikedReviews(Pageable pageable){
         Member me = memberService.getCurrentMember().get();
         List<LikeEntity> likeList = likeRepository.findByMember(me);
-        for(LikeEntity like:likeList){
-            reviewRepository.findByLike(like)
+
+        List<Review> reviews = likeList.stream()
+                .map( l -> l.getReview()).collect(Collectors.toList());
+        try{
+            if(likeList.isEmpty()) {
+                throw new Exception("리뷰가 존재하지 않습니다.");
+            }
         }
-        //Page<Review> reviews = reviewRepository.findByLike(likeList, pageable);
-        return reviews;
+        catch(Exception e){
+
+        }
+        Page<Review> reviewPage = new PageImpl<Review>(reviews);
+        return Review.pageToHeaderDto(reviewPage);
     }
 
- */
     public Review findReviewById(Long id){
         Optional<Review> optionalReview = reviewRepository.findById(id);
         if(optionalReview.isPresent()){
@@ -139,6 +148,7 @@ public class ReviewService {
                         ,review.getVideoImageUrl()
                         ,review.getVideoTitle()
                         ,review.getChannel()
+                        ,review.getContents()
                 ));
         return reviewHeaderDtos;
     }
@@ -164,6 +174,7 @@ public class ReviewService {
                         ,review.getVideoImageUrl()
                         ,review.getVideoTitle()
                         ,review.getChannel()
+                        ,review.getContents()
                 ));
         return reviewHeaderDtos;
     }
@@ -187,6 +198,7 @@ public class ReviewService {
                         ,review.getVideoImageUrl()
                         ,review.getVideoTitle()
                         ,review.getChannel()
+                        ,review.getContents()
                 ));
         return reviewHeaderDtos;
     }

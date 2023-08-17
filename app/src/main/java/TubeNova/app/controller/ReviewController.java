@@ -24,7 +24,7 @@ import java.util.List;
 @RequestMapping("/reviews")
 @RestController
 @RequiredArgsConstructor
-@CrossOrigin
+@CrossOrigin(origins = "http://tubenova.site:3000")
 public class ReviewController {
 
     private final ReviewService reviewService;
@@ -42,13 +42,12 @@ public class ReviewController {
     public Page<ReviewHeaderDto> getMyReviews(@PageableDefault(size = 10, sort = "createdTime", direction = Sort.Direction.DESC) Pageable pageable){
         return reviewService.findMyReviews(pageable);
     }
-    /*
     @GetMapping("/liked")
     public Page<ReviewHeaderDto> getLikedReviews(@PageableDefault(size = 10, sort = "createdTime", direction = Sort.Direction.DESC) Pageable pageable){
-        return Review.pageToHeaderDto(reviewService.getLikedReviews(pageable));
+        return reviewService.getLikedReviews(pageable);
+        //return Review.pageToHeaderDto(reviews);
     }
 
-     */
     @GetMapping("/member/{member_id}")
     public Page getMemberReviewList(@PathVariable("member_id") Long member_id,
                                     @PageableDefault(size = 10, sort = "createdTime", direction = Sort.Direction.DESC)

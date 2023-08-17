@@ -1,6 +1,8 @@
 package TubeNova.app.domain;
 
 import TubeNova.app.dto.review.ReviewHeaderDto;
+import com.fasterxml.jackson.annotation.JsonAutoDetect;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.*;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
@@ -19,44 +21,54 @@ import org.springframework.data.domain.Page;
 @AllArgsConstructor
 @NoArgsConstructor
 @Table(name = "review")
-@DynamicInsert
-@DynamicUpdate
+//@DynamicInsert
+//@DynamicUpdate
 public class Review extends BaseEntity {
     @Id
     @Column(name = "review_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @JsonProperty
     private Long id;
 
     @Column(nullable = false)   //영상 썸네일
+    @JsonProperty
     private String videoImageUrl;
 
     @Column(nullable = false)   //영상 제목
+    @JsonProperty
     private String videoTitle;
 
     @Column(nullable = false)   //채널명
+    @JsonProperty
     private String channel;
 
     @Column(nullable = false)   //유튜브 영상 게시일
+    @JsonProperty
     private String videoDate;
 
     @Column   //리뷰 제목
     private String title;
 
     @Column(nullable = false)   //작성자명
+    @JsonProperty
     private String writer;
 
     @Column(nullable = false)   //영상링크
+    @JsonProperty
     private String linkURL;
 
     @Column(nullable = false)   //내용
+    @JsonProperty
     private String contents;
 
     @Column                     //별점
+    @JsonProperty
     private int rating = 0;
 
     @Column                     //카테고리
+    @JsonProperty
     private Category category;
-
+    @JsonProperty
     private Integer likes = 0;  //좋아요 수
 
     @JsonIgnore                             //@ManyToOne의 Fetch 타입을 Lazy로 사용했을 때 나타나는 문제점, 비어있는 객체를 Serialize 하려다 에러가 발생
@@ -117,7 +129,7 @@ public class Review extends BaseEntity {
                 .videoTitle(r.videoTitle)
                 .channel(r.channel)
                 .title(r.title)
-                .writer(r.member.getName())
+                .writer(r.writer)
                 .linkURL(r.linkURL)
                 .rating(r.rating)
                 .reviewCreatedTime(r.getCreatedTime())

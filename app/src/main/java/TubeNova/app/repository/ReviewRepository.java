@@ -28,7 +28,4 @@ public interface ReviewRepository extends JpaRepository<Review, Long> {
     @Query("SELECT r FROM Review r where r.category in :categories")
     Page<Review> findByFavoriteCategories(List<Category> categories, Pageable pageable);
 
-    //@Query("SELECT r FROM Review r where :like in r.like")
-    Optional<LikeEntity> findByLike(LikeEntity like);
-
 }
