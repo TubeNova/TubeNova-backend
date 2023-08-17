@@ -37,7 +37,7 @@ public class Review extends BaseEntity {
     @Column(nullable = false)   //유튜브 영상 게시일
     private String videoDate;
 
-    @Column(nullable = false)   //리뷰 제목
+    @Column   //리뷰 제목
     private String title;
 
     @Column(nullable = false)   //작성자명
