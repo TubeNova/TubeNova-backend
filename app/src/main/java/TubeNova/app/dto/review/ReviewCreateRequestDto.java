@@ -24,6 +24,7 @@ public class ReviewCreateRequestDto {
                 .title(dto.getTitle())
                 .linkURL(dto.getLinkURL())
                 .contents(dto.getContents())
+                .writer(member.getName())
                 .rating(dto.getRating())
                 .category(dto.getCategory())
                 .member(member)
