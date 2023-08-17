@@ -1,3 +1,4 @@
+#DB Setting
 spring:
   datasource:
     url: "jdbc:mariadb://svc.sel3.cloudtype.app:32389/tubenova"
@@ -5,6 +6,8 @@ spring:
     password: "1234"
     driver-class-name: org.mariadb.jdbc.Driver
 ---
+
+#Jpa Setting
 spring:
   jpa:
     hibernate:
@@ -13,7 +16,8 @@ spring:
       hibernate:
         format_sql: true
         show_sql: true
-        dialect: org.hibernate.dialect.MariaDB103Dialect
+        dialect: org.hibernate.dialect.MariaDBDialect
+
 ---
 spring:
   devtools:
@@ -24,6 +28,26 @@ spring:
   freemarker:
     cache: false
 ---
-jwt:
-  secret: ${SECRET}
 
+#Jwt
+jwt:
+  secret: c3ByaW5nLWJvb3Qtc2VjdXJpdHktand0LUxpa2UtSm9icy1zcHJpbmctYm9vdC1zZWN1cml0eS1qd3QtTGlrZS1Kb2Jz
+---
+
+#Redis
+spring:
+  redis:
+    host: localhost
+    port: 6379
+---
+
+#google login
+spring:
+  security:
+    oauth2:
+      client:
+        registration:
+          google:
+            client-id: 310888433920-qcb4vaemu1jdb3aq3c9l988kreirbvrj.apps.googleusercontent.com
+            client-secret: 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
+            scope: profile, email
