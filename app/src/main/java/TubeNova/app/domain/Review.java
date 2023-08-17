@@ -1,5 +1,6 @@
 package TubeNova.app.domain;
 
+import TubeNova.app.dto.review.ReviewHeaderDto;
 import lombok.*;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
@@ -10,6 +11,7 @@ import TubeNova.app.dto.review.ReviewCreateResponseDto;
 import TubeNova.app.dto.review.ReviewDetailDto;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
+import org.springframework.data.domain.Page;
 
 @Entity
 @Getter
@@ -54,7 +56,7 @@ public class Review extends BaseEntity {
 
 
     @Builder
-    public Review(String title, String linkURL, String contents, int rating, Category category, Member member, int likes){
+    public Review(String title, String linkURL, String contents, int rating, Category category, Member member, int likes, String writer){
         this.title = title;
         this.linkURL = linkURL;
         this.contents = contents;
@@ -62,6 +64,7 @@ public class Review extends BaseEntity {
         this.category = category;
         this.member = member;
         this.likes = likes;
+        this.writer = writer;
     }
 
     public void addLike(){
@@ -72,19 +75,32 @@ public class Review extends BaseEntity {
         this.likes--;
     }
 
-    public ReviewDetailDto toReviewDto(Review review, String writer){
+    public ReviewDetailDto toReviewDto(){
         ReviewDetailDto dto = new ReviewDetailDto().builder()
-                .title(review.getTitle())
-                .linkURL(review.getLinkURL())
-                .contents(review.getContents())
-                .rating(review.getRating())
-                .category(review.getCategory())
-                .reviewCreatedTime(review.getCreatedTime())
-                .likes(review.getLikes())
+                .title(title)
+                .linkURL(linkURL)
+                .contents(contents)
+                .rating(rating)
+                .category(category)
+                .reviewCreatedTime(getCreatedTime())
+                .likes(likes)
                 .writer(writer)
                 .build();
 
         return dto;
+    }
+    public static Page<ReviewHeaderDto> pageToHeaderDto(Page<Review> pageReviews){
+        Page<ReviewHeaderDto> pageHeaderDtos = pageReviews.map(r-> ReviewHeaderDto.builder()
+                .title(r.title)
+                .writer(r.member.getName())
+                .linkURL(r.linkURL)
+                .rating(r.rating)
+                .reviewCreatedTime(r.getCreatedTime())
+                .likes(r.likes)
+                .category(r.category)
+                .id(r.id)
+                .build());
+        return pageHeaderDtos;
     }
 
     //수정하기

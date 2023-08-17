@@ -1,5 +1,6 @@
 package TubeNova.app.dto.review;
 
+import TubeNova.app.domain.Category;
 import TubeNova.app.domain.Review;
 import lombok.*;
 
@@ -10,15 +11,18 @@ import java.time.LocalDateTime;
 @ToString
 @NoArgsConstructor
 public class ReviewHeaderDto {
+    private Long id;
     private String title;
     private String writer;
     private String linkURL;
     private int rating;
+    private Category category;
     private LocalDateTime reviewCreatedTime;
     private int likes;
 
     public static ReviewHeaderDto toReviewHeaderDto(Review review){
         ReviewHeaderDto reviewHeaderDto=new ReviewHeaderDto();
+        reviewHeaderDto.setId(review.getId());
         reviewHeaderDto.setTitle(review.getTitle());
         reviewHeaderDto.setWriter(review.getWriter());
         reviewHeaderDto.setLinkURL(review.getLinkURL());
@@ -28,10 +32,12 @@ public class ReviewHeaderDto {
 
         return reviewHeaderDto;
     }
-
-    public ReviewHeaderDto(String title, String writer, String linkURL, int rating, LocalDateTime reviewCreatedTime, int likes){
+    @Builder
+    public ReviewHeaderDto(Long id,String title, String writer, Category category, String linkURL, int rating, LocalDateTime reviewCreatedTime, int likes){
+        this.id = id;
         this.title=title;
         this.writer=writer;
+        this.category = category;
         this.linkURL=linkURL;
         this.rating=rating;
         this.reviewCreatedTime=reviewCreatedTime;

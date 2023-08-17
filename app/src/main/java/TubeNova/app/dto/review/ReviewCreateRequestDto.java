@@ -16,7 +16,6 @@ public class ReviewCreateRequestDto {
     private int rating;
     private Category category;
     private LocalDateTime createdTime;  //따로 받지 않아도 될거 같음
-    private Long id;
 
     public static Review toReview(ReviewCreateRequestDto dto, Member member){
 
@@ -27,6 +26,7 @@ public class ReviewCreateRequestDto {
                 .rating(dto.getRating())
                 .category(dto.getCategory())
                 .member(member)
+                .writer(member.getName())
                 .build();
         return review;
     }

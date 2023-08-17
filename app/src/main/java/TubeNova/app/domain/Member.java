@@ -34,7 +34,8 @@ public class Member {
 
     @Column(nullable = false)
     private String name;
-
+    @Column
+    private Long subscribeCount = 0L;
     @Column(name ="favorite_category")
     private List<Category> favoriteCategory;
 
@@ -52,10 +53,18 @@ public class Member {
     @OneToMany(mappedBy = "member", cascade = CascadeType.REMOVE, orphanRemoval = true, fetch = FetchType.LAZY)
     private List<Review> reviewList =new ArrayList<>();
 
+    @OneToMany(mappedBy = "member", cascade = CascadeType.REMOVE, fetch = FetchType.LAZY)
+    private List<Subscribe> subscribes = new ArrayList<>();
+
     public void setName(String name) {
         this.name = name;
     }
-
+    public void subscribeCountIncrease(){
+        subscribeCount++;
+    }
+    public void subscribeCountDecrease(){
+        subscribeCount--;
+    }
     public String getPassword(){
         return password;
     }
@@ -85,6 +94,10 @@ public class Member {
         return new MemberCreateResponseDto(member.email, member.name, Category.toStringList(member.favoriteCategory), member.authority.toString());
     }
 
+    public MemberDetailDto memberToDetailDto(){
+        return new MemberDetailDto(id.toString(), name, subscribeCount);
+    }
+
     public static MemberUpdateResponseDto memberToUpdateResponseDto(Member member){
         return new MemberUpdateResponseDto(member.email, member.name, Category.toStringList(member.favoriteCategory));
     }
@@ -92,6 +105,7 @@ public class Member {
         Page<MemberDetailDto> pageMemberDetailDtos = pageMembers.map(m-> MemberDetailDto.builder()
                 .id(m.id.toString())
                 .name(m.name)
+                .subscribeCount(m.subscribeCount)
                 .build());
         return pageMemberDetailDtos;
     }
