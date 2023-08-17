@@ -1,8 +1,8 @@
 spring:
   datasource:
-    url: "jdbc:mariadb://svc.sel3.cloudtype.app:32389/tubenova"
-    username: "root"
-    password: "1234"
+    url: "
+    username: "r
+    password: "
     driver-class-name: org.mariadb.jdbc.Driver
 ---
 spring:
