@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@CrossOrigin
+@CrossOrigin(origins = "http://tubenova.site:3000")
 @Controller
 @RequestMapping("/member")
 @RequiredArgsConstructor

@@ -1,19 +1,19 @@
 spring:
   datasource:
-    url: "jdbc:mariadb://${DB_HOST}:${PORT}/tubenova"
-    username: "${USERNAME}"
-    password: "${PASSWORD}"
-    driver-class-name: org.mariadb.jdbc.Driver
+    url: "jdbc:mysql://localhost/tubenova"
+    username: "root"
+    password: "dnjsdnd1002!"
+    driver-class-name: com.mysql.cj.jdbc.Driver
 ---
 spring:
   jpa:
     hibernate:
-      ddl-auto: create
+      ddl-auto: update
     properties:
       hibernate:
         format_sql: true
         show_sql: true
-        dialect: org.hibernate.dialect.MariaDB103Dialect
+        dialect: org.hibernate.dialect.MySQL8Dialect
 ---
 spring:
   devtools:
@@ -25,4 +25,9 @@ spring:
     cache: false
 ---
 jwt:
-  secret: ${SECRET}
+  secret: c3ByaW5nLWJvb3Qtc2VjdXJpdHktand0LUxpa2UtSm9icy1zcHJpbmctYm9vdC1zZWN1cml0eS1qd3QtTGlrZS1Kb2Jz
+---
+spring:
+  redis:
+    host: localhost
+    port: 6379
