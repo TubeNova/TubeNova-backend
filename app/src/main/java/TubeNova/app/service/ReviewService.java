@@ -214,15 +214,16 @@ public class ReviewService {
         return rd;
     }
 
-    public int findLike(Long id, Long memberId) {
+    public boolean findLike(Long id, Long memberId) {
+        if(memberId == null) return false;    //로그인을 안한 상태이면
         Optional<Object> findLike = likeRepository.findByReview_IdAndMember_Id(id, memberId);
 
 
         if (findLike.isEmpty()){
-            return 0;
+            return false;
         }else {
 
-            return 1;
+            return true;
         }
     }
 
