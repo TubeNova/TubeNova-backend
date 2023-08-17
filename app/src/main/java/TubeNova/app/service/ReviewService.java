@@ -184,15 +184,15 @@ public class ReviewService {
         return rd;
     }
 
-    public int findLike(Long id, Long memberId) {
+    public boolean findLike(Long id, Long memberId) {
         Optional<Object> findLike = likeRepository.findByReview_IdAndMember_Id(id, memberId);
 
 
         if (findLike.isEmpty()){
-            return 0;
+            return false;
         }else {
 
-            return 1;
+            return true;
         }
     }
 
