@@ -3,43 +3,43 @@ package TubeNova.app.dto.review;
 import TubeNova.app.domain.Category;
 import TubeNova.app.domain.Member;
 import TubeNova.app.domain.Review;
-import jakarta.persistence.Column;
-import lombok.Getter;
+import lombok.*;
 
 import java.time.LocalDateTime;
-import java.util.Optional;
 
+@Setter
 @Getter
-public class ReviewCreateRequestDto {
+@NoArgsConstructor
+public class ReviewDetailDto {
     private String videoImageUrl;       //영상 썸네일
     private String videoTitle;          //영상 제목
     private String channel;             //채널명
     private String videoDate;           //유튜브 영상 게시일
-    private String title;               //리뷰 제목
-    private String linkURL;             //영상 링크
-    private String contents;            //리뷰 내용
-    private String writer;              //작성자
-    private int rating;                 //별점
-    private Category category;          //카테고리
-    private LocalDateTime createdTime;  //리뷰 생성 날짜
-    private Long id;                    //memberId
+    private String title;
+    private String linkURL;
+    private int rating;
+    private LocalDateTime reviewCreatedTime;
+    private int likes;
+    private String contents;
+    private String writer;
+    private Category category;
+    private boolean memberLike;
 
-    public static Review toReview(ReviewCreateRequestDto dto, Member member){
 
-        Review review = new Review().builder()
-                .videoImageUrl(dto.getVideoImageUrl())
-                .videoTitle(dto.getVideoTitle())
-                .channel(dto.getChannel())
-                .videoDate(dto.getVideoDate())
-                .title(dto.getTitle())
-                .linkURL(dto.getLinkURL())
-                .writer(member.getName())
-                .contents(dto.getContents())
-                .rating(dto.getRating())
-                .category(dto.getCategory())
-                .member(member)
-                .build();
-        return review;
+    @Builder
+    public ReviewDetailDto(String videoImageUrl, String videoTitle, String channel, String videoDate, String title, String linkURL, int rating, LocalDateTime reviewCreatedTime, int likes, String contents, String writer, Category category) {
+        this.videoImageUrl = videoImageUrl;
+        this.videoTitle = videoTitle;
+        this.channel = channel;
+        this.videoDate = videoDate;
+        this.title = title;
+        this.linkURL = linkURL;
+        this.rating = rating;
+        this.reviewCreatedTime = reviewCreatedTime;
+        this.likes = likes;
+        this.contents = contents;
+        this.writer = writer;
+        this.category = category;
     }
-}
 
+}
