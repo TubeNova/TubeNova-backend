@@ -82,18 +82,14 @@ public class ReviewService {
         Page<Review> pageReviews = reviewRepository.findReviewByMemberId(SecurityUtil.getCurrentMemberId(), pageable);
         return Review.pageToHeaderDto(pageReviews);
     }
-/*
+    
     public Page<Review> getLikedReviews(Pageable pageable){
         Member me = memberService.getCurrentMember().get();
-        List<LikeEntity> likeList = likeRepository.findByMember(me);
-        for(LikeEntity like:likeList){
-            reviewRepository.findByLike(like)
-        }
-        //Page<Review> reviews = reviewRepository.findByLike(likeList, pageable);
+        List<LikeEntity> likeList = likeRepository.findByMember_Id(me.getId());
+        Page<Review> reviews = reviewRepository.findByLikes(likeList, pageable);
         return reviews;
     }
-
- */
+    
     public Review findReviewById(Long id){
         Optional<Review> optionalReview = reviewRepository.findById(id);
         if(optionalReview.isPresent()){
