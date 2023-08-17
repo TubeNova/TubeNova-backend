@@ -109,6 +109,9 @@ public class Review extends BaseEntity {
     }
     public static Page<ReviewHeaderDto> pageToHeaderDto(Page<Review> pageReviews){
         Page<ReviewHeaderDto> pageHeaderDtos = pageReviews.map(r-> ReviewHeaderDto.builder()
+                .videoImageUrl(r.videoImageUrl)
+                .videoTitle(r.videoTitle)
+                .channel(r.channel)
                 .title(r.title)
                 .writer(r.member.getName())
                 .linkURL(r.linkURL)
