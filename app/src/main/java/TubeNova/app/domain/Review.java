@@ -95,6 +95,10 @@ public class Review extends BaseEntity {
 
     public ReviewDetailDto toReviewDto(){
         ReviewDetailDto dto = new ReviewDetailDto().builder()
+                .videoImageUrl(videoImageUrl)
+                .videoTitle(videoTitle)
+                .channel(channel)
+                .videoDate(videoDate)
                 .title(title)
                 .linkURL(linkURL)
                 .contents(contents)

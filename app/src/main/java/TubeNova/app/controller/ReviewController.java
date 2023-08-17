@@ -151,20 +151,20 @@ public class ReviewController {
 
     @GetMapping("/{category}/id")
     public Page<ReviewHeaderDto> findReviewByCategoryOrderById(@PathVariable("category") Category category,
-                                             @PageableDefault(size = 20, sort = "id", direction = Sort.Direction.DESC) Pageable pageable){
+                                                               @PageableDefault(size = 20, sort = "id", direction = Sort.Direction.DESC) Pageable pageable){
         return reviewService.findReviewByCategoryOrderById(category, pageable);
     }
 
     @GetMapping("/{category}/likes")
     public Page<ReviewHeaderDto> findReviewByCategoryOrderByLikes(@PathVariable("category") Category category,
-                                                      @PageableDefault(size = 20, sort = "id", direction = Sort.Direction.DESC) Pageable pageable){
+                                                                  @PageableDefault(size = 20, sort = "id", direction = Sort.Direction.DESC) Pageable pageable){
         return reviewService.findReviewByCategoryOrderByLikes(category, pageable);
     }
 
     //리뷰 검색
     @GetMapping("/search/{keyword}")
     public Page<Review> searchReview(@PathVariable String keyword,
-                                                      @PageableDefault(size = 20, sort = "id", direction = Sort.Direction.DESC) Pageable pageable){
+                                     @PageableDefault(size = 20, sort = "id", direction = Sort.Direction.DESC) Pageable pageable){
         Page<Review> reviews = reviewService.searchReviews(keyword, pageable);
         return reviews;
     }
@@ -172,4 +172,6 @@ public class ReviewController {
     public ResponseEntity<ReviewDetailDto> reviewDetail(@PathVariable Long id, @PageableDefault(size = 20, sort = "id", direction = Sort.Direction.DESC) Pageable pageable){
         return ResponseEntity.ok(reviewService.findReviewById(id).toReviewDto());
     }
+
 }
+

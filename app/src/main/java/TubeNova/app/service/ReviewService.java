@@ -35,6 +35,7 @@ public class ReviewService {
         Member me = memberService.getCurrentMember().get();
 
         Review review = requestDto.toReview(requestDto, me);
+        if(review.getTitle() != null) review.setTitle(requestDto.getTitle());
         if(review.getId() != null){
             return null;
         }
