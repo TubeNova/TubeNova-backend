@@ -20,13 +20,13 @@ public class MemberCreateRequestDto {
     @NotNull
     private String password;
     private String name;
-    private List<String> categories;
+    private List<Category> categories;
     public Member toMember(PasswordEncoder passwordEncoder) {
         return Member.builder()
                 .email(username)
                 .password(passwordEncoder.encode(password))
                 .name(name)
-                .favoriteCategories(Category.toCategories(categories))
+                .favoriteCategories(categories)
                 .authority(Authority.ROLE_USER)
                 .build();
     }

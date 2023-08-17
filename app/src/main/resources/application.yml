@@ -1,1 +1,28 @@
-
+spring:
+  datasource:
+    url: "jdbc:mariadb://svc.sel3.cloudtype.app:32389/tubenova"
+    username: "root"
+    password: "1234"
+    driver-class-name: org.mariadb.jdbc.Driver
+---
+spring:
+  jpa:
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        format_sql: true
+        show_sql: true
+        dialect: org.hibernate.dialect.MariaDB103Dialect
+---
+spring:
+  devtools:
+    livereload:
+      enabled: true
+    restart:
+      enabled: false
+  freemarker:
+    cache: false
+---
+jwt:
+  secret: c3ByaW5nLWJvb3Qtc2VjdXJpdHktand0LUxpa2UtSm9icy1zcHJpbmctYm9vdC1zZWN1cml0eS1qd3QtTGlrZS1Kb2Jz

@@ -1,5 +1,6 @@
 package TubeNova.app.dto.member;
 
+import TubeNova.app.domain.Category;
 import lombok.*;
 
 import java.util.List;
@@ -12,7 +13,7 @@ import java.util.List;
 public class MemberUpdateRequestDto {
 
     private String name;
-    private List<String> categories;
+    private List<Category> categories;
     private String originalPassword;
     private String updatedPassword;
 
