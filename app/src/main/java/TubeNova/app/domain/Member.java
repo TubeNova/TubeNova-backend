@@ -1,11 +1,13 @@
 package TubeNova.app.domain;
 
 import TubeNova.app.dto.member.MemberCreateResponseDto;
+import TubeNova.app.dto.member.MemberDetailDto;
 import TubeNova.app.dto.member.MemberUpdateResponseDto;
 import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
@@ -33,6 +35,7 @@ public class Member {
     @Column(nullable = false)
     private String name;
 
+    private Long subscribeCount = 0L;
     @Column(name ="favorite_category")
     private List<Category> favoriteCategory;
 
@@ -50,10 +53,18 @@ public class Member {
     @OneToMany(mappedBy = "member", cascade = CascadeType.REMOVE, orphanRemoval = true, fetch = FetchType.LAZY)
     private List<Review> reviewList =new ArrayList<>();
 
+    @OneToMany(mappedBy = "member", cascade = CascadeType.REMOVE, fetch = FetchType.LAZY)
+    private List<Subscribe> subscribes = new ArrayList<>();
+
     public void setName(String name) {
         this.name = name;
     }
-
+    public void subscribeCountIncrease(){
+        subscribeCount++;
+    }
+    public void subscribeCountDecrease(){
+        subscribeCount--;
+    }
     public String getPassword(){
         return password;
     }
@@ -80,13 +91,24 @@ public class Member {
     }
 
     public static MemberCreateResponseDto of(Member member) {
-        return new MemberCreateResponseDto(member.email, member.name, member.authority.toString());
+        return new MemberCreateResponseDto(member.email, member.name, Category.toStringList(member.favoriteCategory), member.authority.toString());
+    }
+
+    public MemberDetailDto memberToDetailDto(){
+        return new MemberDetailDto(id.toString(), name, subscribeCount);
     }
 
     public static MemberUpdateResponseDto memberToUpdateResponseDto(Member member){
         return new MemberUpdateResponseDto(member.email, member.name, Category.toStringList(member.favoriteCategory));
     }
-
+    public static Page<MemberDetailDto> memberToMemberDetailPageDto(Page<Member> pageMembers){
+        Page<MemberDetailDto> pageMemberDetailDtos = pageMembers.map(m-> MemberDetailDto.builder()
+                .id(m.id.toString())
+                .name(m.name)
+                .subscribeCount(m.subscribeCount)
+                .build());
+        return pageMemberDetailDtos;
+    }
     public static User memberToUser(Member member){
         GrantedAuthority grantedAuthority = new SimpleGrantedAuthority(member.authority.toString());
         return new User(

@@ -1,5 +1,6 @@
 package TubeNova.app.controller;
 
+import TubeNova.app.domain.Category;
 import TubeNova.app.domain.Review;
 import TubeNova.app.dto.review.ReviewCreateRequestDto;
 import TubeNova.app.dto.review.ReviewDetailDto;
@@ -37,6 +38,10 @@ public class ReviewController {
                 ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
     }
 
+    @GetMapping("/my")
+    public Page<ReviewHeaderDto> getMyReviews(@PageableDefault(size = 10, sort = "createdTime", direction = Sort.Direction.DESC) Pageable pageable){
+        return reviewService.findMyReviews(pageable);
+    }
     @GetMapping("/member/{member_id}")
     public Page getMemberReviewList(@PathVariable("member_id") Long member_id,
                                     @PageableDefault(size = 10, sort = "createdTime", direction = Sort.Direction.DESC)
@@ -88,6 +93,11 @@ public class ReviewController {
         return reviewList;
     }
 
+    @GetMapping("/favorite")
+    public Page<ReviewHeaderDto> findByFavoriteCategories(@PageableDefault(size = 10, sort = "createdTime", direction = Sort.Direction.DESC)Pageable pageable){
+        return reviewService.findByFavoriteCategories(pageable);
+    }
+
     @GetMapping("/weekly-popularity")
     public List<ReviewHeaderDto> getWeekList(){
         List<ReviewHeaderDto> reviewHeaderDtoList=reviewService.getWeekList();
@@ -105,7 +115,7 @@ public class ReviewController {
     @GetMapping("/details/{id}")
     public ResponseEntity<Object> detailReview(@PathVariable Long id){
         ReviewDetailDto reviewDetail = reviewService.getReviewDetail(id);
-        int like = reviewService.findLike(id, SecurityUtil.getCurrentMemberId());   //좋아요 했으면 1, 아니면 0
+        boolean like = reviewService.findLike(id, SecurityUtil.getCurrentMemberId());   //좋아요 했으면 1, 아니면 0
         reviewDetail.setMemberLike(like);
         return (reviewDetail != null) ?
                 ResponseEntity.status(HttpStatus.OK).body(reviewDetail):
@@ -131,22 +141,32 @@ public class ReviewController {
     }
 
     @GetMapping("/favorite-categories")
-    public Page<Review> getFavoriteReviews(@PageableDefault(size = 10, sort = "id", direction = Sort.Direction.DESC) Pageable pageable){
+    public Page<ReviewHeaderDto> getFavoriteReviews(@PageableDefault(size = 20, sort = "id", direction = Sort.Direction.DESC) Pageable pageable){
         return reviewService.getFavoriteReviews(pageable);
     }
 
-    @GetMapping("/{category}")
-    public Page<Review> findReviewByCategory(@PathVariable("category") String category,
-                                             @PageableDefault(size = 20, sort = "id", direction = Sort.Direction.DESC) Pageable pageable){
-        return reviewService.findReviewByCategory(category, pageable);
+    @GetMapping("/{category}/id")
+    public Page<ReviewHeaderDto> findReviewByCategoryOrderById(@PathVariable("category") Category category,
+                                                               @PageableDefault(size = 20, sort = "id", direction = Sort.Direction.DESC) Pageable pageable){
+        return reviewService.findReviewByCategoryOrderById(category, pageable);
+    }
+
+    @GetMapping("/{category}/likes")
+    public Page<ReviewHeaderDto> findReviewByCategoryOrderByLikes(@PathVariable("category") Category category,
+                                                                  @PageableDefault(size = 20, sort = "id", direction = Sort.Direction.DESC) Pageable pageable){
+        return reviewService.findReviewByCategoryOrderByLikes(category, pageable);
     }
 
     //리뷰 검색
-    @GetMapping("/search")
-    public Page<Review> searchReview(@RequestParam(value = "keyword") String keyword,
-                                                      @PageableDefault(size = 20, sort = "id", direction = Sort.Direction.DESC) Pageable pageable){
+    @GetMapping("/search/{keyword}")
+    public Page<Review> searchReview(@PathVariable String keyword,
+                                     @PageableDefault(size = 20, sort = "id", direction = Sort.Direction.DESC) Pageable pageable){
         Page<Review> reviews = reviewService.searchReviews(keyword, pageable);
         return reviews;
+    }
+    @GetMapping("/{id}")
+    public ResponseEntity<ReviewDetailDto> reviewDetail(@PathVariable Long id, @PageableDefault(size = 20, sort = "id", direction = Sort.Direction.DESC) Pageable pageable){
+        return ResponseEntity.ok(reviewService.findReviewById(id).toReviewDto());
     }
 
 }

@@ -10,10 +10,11 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+@CrossOrigin
 @Slf4j
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/tubenova/likes")
+@RequestMapping("/likes")
 public class LikeController {
 
     private final LikeService likeService;

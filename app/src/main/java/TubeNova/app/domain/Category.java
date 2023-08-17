@@ -16,17 +16,6 @@ public enum Category {
         this.category = category;
     }
 
-    public static List<Category> toCategories(List<String> strCategories){
-        List<Category> categories = new ArrayList<>();
-        for(String category : strCategories){
-            Category[] arr = Category.values();
-            Category ctgr = Arrays.stream(arr)
-                    .filter(o -> (o.category.equals(category))).findAny()
-                    .orElseThrow(()->new IllegalArgumentException("올바르지 않은 카테고리 입니다."));
-            categories.add(ctgr);
-        }
-        return categories;
-    }
     public static Category toCategory(String str){
         Category[] arr = Category.values();
         Category ctgr = Arrays.stream(arr).filter(o->(o.category.equals(str))).findAny()
