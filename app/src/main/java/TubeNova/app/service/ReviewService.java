@@ -7,6 +7,7 @@ import TubeNova.app.dto.review.*;
 import TubeNova.app.repository.LikeRepository;
 import TubeNova.app.repository.MemberRepository;
 import TubeNova.app.repository.ReviewRepository;
+import TubeNova.app.util.SecurityUtil;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -30,12 +31,9 @@ public class ReviewService {
     private final LikeRepository likeRepository;
 
     public Review createReview(ReviewCreateRequestDto requestDto) {
-        Member member = memberRepository.findById(requestDto.getId()).orElse(null);
-        if (member == null) {
-            return null;
-        }
+        Member me = memberService.getCurrentMember().get();
 
-        Review review = requestDto.toReview(requestDto, member);
+        Review review = requestDto.toReview(requestDto, me);
         if(review.getId() != null){
             return null;
         }
@@ -79,15 +77,32 @@ public class ReviewService {
         reviewRepository.delete(target);
         return target;
     }
-
-    public Page<Review> getFavoriteReviews(Pageable pageable){
+    public Page<ReviewHeaderDto> findMyReviews(Pageable pageable){
+        Page<Review> pageReviews = reviewRepository.findReviewByMemberId(SecurityUtil.getCurrentMemberId(), pageable);
+        return Review.pageToHeaderDto(pageReviews);
+    }
+    public Review findReviewById(Long id){
+        Optional<Review> optionalReview = reviewRepository.findById(id);
+        if(optionalReview.isPresent()){
+            return optionalReview.get();
+        }
+        return null;
+    }
+    public Page<ReviewHeaderDto> getFavoriteReviews(Pageable pageable){
         Member currentMember = memberService.getCurrentMember().get();
         List<Category> categories = currentMember.getCategories();
-        return reviewRepository.findByCategories(categories, pageable);
+        Page<Review> pageReviews = reviewRepository.findByCategories(categories, pageable);
+        return Review.pageToHeaderDto(pageReviews);
     }
 
-    public Page<Review> findReviewByCategory(String category, Pageable pageable){
-        return reviewRepository.findByCategory(Category.toCategory(category), pageable);
+    public Page<ReviewHeaderDto> findReviewByCategoryOrderById(Category category, Pageable pageable){
+        Page<Review> pageReviews = reviewRepository.findByCategory(category, pageable);
+        return Review.pageToHeaderDto(pageReviews);
+    }
+
+    public Page<ReviewHeaderDto> findReviewByCategoryOrderByLikes(Category category, Pageable pageable){
+        Page<Review> pageReviews = reviewRepository.findByCategory(category, pageable);
+        return Review.pageToHeaderDto(pageReviews);
     }
 
     public Page<ReviewHeaderDto> getMemberReviewList (Long memberId, Pageable pageable){
@@ -99,12 +114,16 @@ public class ReviewService {
         Page<Review> reviews=
                 reviewRepository.findReviewByMemberId(memberId, pageable);
         Page<ReviewHeaderDto> reviewHeaderDtos=reviews.map(review ->
-                new ReviewHeaderDto(review.getTitle()
+                new ReviewHeaderDto(
+                        review.getId()
+                        ,review.getTitle()
                         ,review.getWriter()
+                        ,review.getCategory()
                         ,review.getLinkURL()
                         ,review.getRating()
                         ,review.getCreatedTime()
-                        ,review.getLikes()));
+                        ,review.getLikes()
+                ));
         return reviewHeaderDtos;
     }
 
@@ -117,8 +136,11 @@ public class ReviewService {
         Page<Review> reviews=
                 reviewRepository.findAll(pageable);
         Page<ReviewHeaderDto> reviewHeaderDtos=reviews.map(review ->
-                new ReviewHeaderDto(review.getTitle()
+                new ReviewHeaderDto(
+                        review.getId()
+                        ,review.getTitle()
                         ,review.getWriter()
+                        ,review.getCategory()
                         ,review.getLinkURL()
                         ,review.getRating()
                         ,review.getCreatedTime()
@@ -133,8 +155,11 @@ public class ReviewService {
         Page<Review> reviews=
                 reviewRepository.findByCategory(Category.toCategory(category), pageable);
         Page<ReviewHeaderDto> reviewHeaderDtos=reviews.map(review ->
-                new ReviewHeaderDto(review.getTitle()
+                new ReviewHeaderDto(
+                        review.getId()
+                        ,review.getTitle()
                         ,review.getWriter()
+                        ,review.getCategory()
                         ,review.getLinkURL()
                         ,review.getRating()
                         ,review.getCreatedTime()
@@ -165,7 +190,12 @@ public class ReviewService {
         return reviewHeaderDtoList;
     }
 
-
+    public Page<ReviewHeaderDto> findByFavoriteCategories(Pageable pageable){
+        Member me = memberService.getCurrentMember().get();
+        List<Category> favoriteCategories = me.getFavoriteCategory();
+        Page<Review> pageReviews = reviewRepository.findByFavoriteCategories(favoriteCategories, pageable);
+        return Review.pageToHeaderDto(pageReviews);
+    }
 
 
     public ReviewDetailDto getReviewDetail(Long id) {
@@ -179,12 +209,13 @@ public class ReviewService {
             return null;
         }
 
-        ReviewDetailDto rd = review.toReviewDto(review, member.getName());
+        ReviewDetailDto rd = review.toReviewDto();
 
         return rd;
     }
 
     public boolean findLike(Long id, Long memberId) {
+        if(memberId == null) return false;    //로그인을 안한 상태이면
         Optional<Object> findLike = likeRepository.findByReview_IdAndMember_Id(id, memberId);
 
 

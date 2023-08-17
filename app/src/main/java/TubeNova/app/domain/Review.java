@@ -1,5 +1,6 @@
 package TubeNova.app.domain;
 
+import TubeNova.app.dto.review.ReviewHeaderDto;
 import lombok.*;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
@@ -10,6 +11,7 @@ import TubeNova.app.dto.review.ReviewCreateResponseDto;
 import TubeNova.app.dto.review.ReviewDetailDto;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
+import org.springframework.data.domain.Page;
 
 @Entity
 @Getter
@@ -25,9 +27,22 @@ public class Review extends BaseEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false)   //리뷰 제목
+    @Column(nullable = false)   //영상 썸네일
+    private String videoImageUrl;
+
+    @Column(nullable = false)   //영상 제목
+    private String videoTitle;
+
+    @Column(nullable = false)   //채널명
+    private String channel;
+
+    @Column(nullable = false)   //유튜브 영상 게시일
+    private String videoDate;
+
+    @Column   //리뷰 제목
     private String title;
-    @Column(nullable = false)
+
+    @Column(nullable = false)   //작성자명
     private String writer;
 
     @Column(nullable = false)   //영상링크
@@ -54,7 +69,11 @@ public class Review extends BaseEntity {
 
 
     @Builder
-    public Review(String title, String linkURL, String writer, String contents, int rating, Category category, Member member, int likes){
+    public Review(String videoImageUrl, String videoTitle, String channel, String videoDate, String title, String linkURL, String writer, String contents, int rating, Category category, Member member, int likes){
+        this.videoImageUrl = videoImageUrl;
+        this.videoTitle = videoTitle;
+        this.channel = channel;
+        this.videoDate = videoDate;
         this.title = title;
         this.linkURL = linkURL;
         this.writer = writer;
@@ -65,6 +84,7 @@ public class Review extends BaseEntity {
         this.likes = likes;
     }
 
+
     public void addLike(){
         this.likes++;
     }
@@ -73,19 +93,32 @@ public class Review extends BaseEntity {
         this.likes--;
     }
 
-    public ReviewDetailDto toReviewDto(Review review, String writer){
+    public ReviewDetailDto toReviewDto(){
         ReviewDetailDto dto = new ReviewDetailDto().builder()
-                .title(review.getTitle())
-                .linkURL(review.getLinkURL())
-                .contents(review.getContents())
-                .rating(review.getRating())
-                .category(review.getCategory())
-                .reviewCreatedTime(review.getCreatedTime())
-                .likes(review.getLikes())
+                .title(title)
+                .linkURL(linkURL)
+                .contents(contents)
+                .rating(rating)
+                .category(category)
+                .reviewCreatedTime(getCreatedTime())
+                .likes(likes)
                 .writer(writer)
                 .build();
 
         return dto;
+    }
+    public static Page<ReviewHeaderDto> pageToHeaderDto(Page<Review> pageReviews){
+        Page<ReviewHeaderDto> pageHeaderDtos = pageReviews.map(r-> ReviewHeaderDto.builder()
+                .title(r.title)
+                .writer(r.member.getName())
+                .linkURL(r.linkURL)
+                .rating(r.rating)
+                .reviewCreatedTime(r.getCreatedTime())
+                .likes(r.likes)
+                .category(r.category)
+                .id(r.id)
+                .build());
+        return pageHeaderDtos;
     }
 
     //수정하기

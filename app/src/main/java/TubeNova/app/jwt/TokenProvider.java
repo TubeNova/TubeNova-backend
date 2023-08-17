@@ -2,7 +2,6 @@ package TubeNova.app.jwt;
 
 
 import TubeNova.app.dto.token.TokenDto;
-import TubeNova.app.util.RedisUtil;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
@@ -30,13 +29,13 @@ public class TokenProvider {
     private static final String BEARER_TYPE = "Bearer";
     private static final long ACCESS_TOKEN_EXPIRE_TIME = 1000 * 60 * 30;            // 30분
     private static final long REFRESH_TOKEN_EXPIRE_TIME = 1000 * 60 * 60 * 24 * 7;  // 7일
-    private final RedisUtil redisUtil;
+    //private final RedisUtil redisUtil;
     private final Key key;
 
-    public TokenProvider(@Value("${jwt.secret}") String secretKey, RedisUtil redisUtil) {
+    public TokenProvider(@Value("${jwt.secret}") String secretKey/*, RedisUtil redisUtil*/) {
         byte[] keyBytes = Decoders.BASE64.decode(secretKey);
         this.key = Keys.hmacShaKeyFor(keyBytes);
-        this.redisUtil = redisUtil;
+        //this.redisUtil = redisUtil;
     }
 
     public TokenDto generateTokenDto(Authentication authentication) {
@@ -94,9 +93,6 @@ public class TokenProvider {
     public boolean validateToken(String token) {
         try {
             Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token);
-            if (redisUtil.hasKeyBlackList(token)){
-                throw new RuntimeException("logged Out");
-            }
             return true;
         } catch (io.jsonwebtoken.security.SecurityException | MalformedJwtException e) {
             log.info("잘못된 JWT 서명입니다.");

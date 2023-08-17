@@ -1,1 +1,29 @@
+spring:
+  datasource:
+    url: "jdbc:mariadb://${DB_HOST}:${PORT}/tubenova"
+    username: "${USERNAME}"
+    password: "${PASSWORD}"
+    driver-class-name: org.mariadb.jdbc.Driver
+---
+spring:
+  jpa:
+    hibernate:
+      ddl-auto: create
+    properties:
+      hibernate:
+        format_sql: true
+        show_sql: true
+        dialect: org.hibernate.dialect.MariaDB103Dialect
+---
+spring:
+  devtools:
+    livereload:
+      enabled: true
+    restart:
+      enabled: false
+  freemarker:
+    cache: false
+---
+jwt:
+  secret: ${SECRET}
 
