@@ -1,5 +1,6 @@
 package TubeNova.app.domain;
 
+import TubeNova.app.dto.review.ReviewHeaderDto;
 import lombok.*;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
@@ -10,6 +11,7 @@ import TubeNova.app.dto.review.ReviewCreateResponseDto;
 import TubeNova.app.dto.review.ReviewDetailDto;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
+import org.springframework.data.domain.Page;
 
 @Entity
 @Getter
@@ -82,6 +84,7 @@ public class Review extends BaseEntity {
         this.likes = likes;
     }
 
+
     public void addLike(){
         this.likes++;
     }
@@ -89,7 +92,7 @@ public class Review extends BaseEntity {
     public void subLikes(){
         this.likes--;
     }
-    
+
     public ReviewDetailDto toReviewDto(){
         ReviewDetailDto dto = new ReviewDetailDto().builder()
                 .title(title)
@@ -104,23 +107,18 @@ public class Review extends BaseEntity {
 
         return dto;
     }
-    public ReviewDetailDto toReviewDto(Review review, String writer){
-        ReviewDetailDto dto = new ReviewDetailDto().builder()
-                .videoImageUrl(review.getVideoImageUrl())
-                .videoTitle(review.getVideoTitle())
-                .channel(review.getChannel())
-                .videoDate(review.getVideoDate())
-                .title(review.getTitle())
-                .linkURL(review.getLinkURL())
-                .contents(review.getContents())
-                .rating(review.getRating())
-                .category(review.getCategory())
-                .reviewCreatedTime(review.getCreatedTime())
-                .likes(review.getLikes())
-                .writer(writer)
-                .build();
-
-        return dto;
+    public static Page<ReviewHeaderDto> pageToHeaderDto(Page<Review> pageReviews){
+        Page<ReviewHeaderDto> pageHeaderDtos = pageReviews.map(r-> ReviewHeaderDto.builder()
+                .title(r.title)
+                .writer(r.member.getName())
+                .linkURL(r.linkURL)
+                .rating(r.rating)
+                .reviewCreatedTime(r.getCreatedTime())
+                .likes(r.likes)
+                .category(r.category)
+                .id(r.id)
+                .build());
+        return pageHeaderDtos;
     }
 
     //수정하기
