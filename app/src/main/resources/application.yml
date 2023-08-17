@@ -1,6 +1,6 @@
 spring:
   datasource:
-    url: "jdbc:mysql://${DB_HOST}:${PORT}/tubenova"
+    url: "jdbc:mariadb://${DB_HOST}:${PORT}/tubenova"
     username: "${USERNAME}"
     password: "${PASSWORD}"
     driver-class-name: org.mariadb.jdbc.Driver
