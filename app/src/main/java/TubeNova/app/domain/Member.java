@@ -34,7 +34,7 @@ public class Member {
 
     @Column(nullable = false)
     private String name;
-
+    @Column
     private Long subscribeCount = 0L;
     @Column(name ="favorite_category")
     private List<Category> favoriteCategory;
