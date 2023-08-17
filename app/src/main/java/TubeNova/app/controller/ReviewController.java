@@ -115,8 +115,8 @@ public class ReviewController {
     @GetMapping("/details/{id}")
     public ResponseEntity<Object> detailReview(@PathVariable Long id){
         ReviewDetailDto reviewDetail = reviewService.getReviewDetail(id);
-        //boolean like = reviewService.findLike(id, SecurityUtil.getCurrentMemberId());   //좋아요 했으면 1, 아니면 0
-        //reviewDetail.setMemberLike(like);
+        boolean like = reviewService.findLike(id, SecurityUtil.getCurrentMemberId());   //좋아요 했으면 1, 아니면 0
+        reviewDetail.setMemberLike(like);
         return (reviewDetail != null) ?
                 ResponseEntity.status(HttpStatus.OK).body(reviewDetail):
                 ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
