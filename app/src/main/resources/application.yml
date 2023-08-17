@@ -31,7 +31,7 @@ spring:
 
 #Jwt
 jwt:
-  secret: c3ByaW5nLWJvb3Qtc2VjdXJpdHktand0LUxpa2UtSm9icy1zcHJpbmctYm9vdC1zZWN1cml0eS1qd3QtTGlrZS1Kb2Jz
+  secret: 
 ---
 
 #Redis
