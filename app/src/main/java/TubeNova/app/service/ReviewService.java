@@ -254,7 +254,7 @@ public class ReviewService {
 
     public boolean findLike(Long id, Long memberId) {
         if(memberId == null) return false;    //로그인을 안한 상태이면
-        Optional<Object> findLike = likeRepository.findByReview_IdAndMember_Id(id, memberId);
+        Optional<LikeEntity> findLike = likeRepository.findByReview_IdAndMember_Id(id, memberId);
 
 
         if (findLike.isEmpty()){
