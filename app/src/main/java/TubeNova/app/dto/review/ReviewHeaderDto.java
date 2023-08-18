@@ -1,6 +1,8 @@
 package TubeNova.app.dto.review;
 
+
 import TubeNova.app.domain.Category;
+import TubeNova.app.domain.Member;
 import TubeNova.app.domain.Review;
 import lombok.*;
 
@@ -14,9 +16,12 @@ public class ReviewHeaderDto {
     private Long id;
     private String title;
     private String writer;
+
+    private Long member_id;     //작성자 id
     private String linkURL;
     private int rating;
     private Category category;
+
     private LocalDateTime reviewCreatedTime;
     private int likes;
     private String videoImageUrl;       //영상 썸네일
@@ -29,6 +34,7 @@ public class ReviewHeaderDto {
         reviewHeaderDto.setId(review.getId());
         reviewHeaderDto.setTitle(review.getTitle());
         reviewHeaderDto.setWriter(review.getWriter());
+        reviewHeaderDto.setMember_id(reviewHeaderDto.getMember_id());   //작성자 id
         reviewHeaderDto.setLinkURL(review.getLinkURL());
         reviewHeaderDto.setRating(review.getRating());
         reviewHeaderDto.setReviewCreatedTime(review.getCreatedTime());
@@ -40,12 +46,13 @@ public class ReviewHeaderDto {
         return reviewHeaderDto;
     }
     @Builder
-    public ReviewHeaderDto( Long id,String title, String writer, Category category, String linkURL, int rating, LocalDateTime reviewCreatedTime, int likes, String videoImageUrl, String videoTitle, String channel, String contents){
+    public ReviewHeaderDto( Long id,String title, String writer, Long member_id, Category category, String linkURL, int rating, LocalDateTime reviewCreatedTime, int likes, String videoImageUrl, String videoTitle, String channel, String contents){
         this.videoImageUrl = videoImageUrl;
         this.videoTitle = videoTitle;
         this.channel = channel;
         this.id = id;
         this.title=title;
+        this.member_id=member_id;
         this.writer=writer;
         this.category = category;
         this.linkURL=linkURL;
