@@ -34,13 +34,10 @@ public class LikeService {
         Member member = memberRepository.findById(likeRequestDto.getMemberId()).orElse(null);
         Review review = reviewRepository.findById(likeRequestDto.getReviewId()).orElse(null);
 
-        if (member == null || review == null) {
-            return null;
-        }
+        if (member == null || review == null) return null;
 
         // 이미 좋아요되어있으면 에러 반환
-        if (likeRepository.findByReview_IdAndMember_Id(member.getId(),review.getId()).isPresent()){
-            //TODO 409에러로 변경
+        if (likeRepository.findByReview_IdAndMember_Id(review.getId(), member.getId()).orElse(null) != null){
             return null;
         }
 
@@ -67,7 +64,7 @@ public class LikeService {
 
         if (member == null || review == null) return null;
 
-        LikeEntity like = (LikeEntity) likeRepository.findByReview_IdAndMember_Id(member.getId(), review.getId()).orElse(null);
+        LikeEntity like = likeRepository.findByReview_IdAndMember_Id(review.getId(), member.getId()).orElse(null);
 
         if (like == null) return null;
 

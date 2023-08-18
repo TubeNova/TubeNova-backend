@@ -13,6 +13,7 @@ import java.time.LocalDateTime;
 public class ReviewHeaderDto {
     private Long id;
     private String title;
+    private String contents;
     private String writer;
     private String linkURL;
     private int rating;
@@ -24,6 +25,7 @@ public class ReviewHeaderDto {
         ReviewHeaderDto reviewHeaderDto=new ReviewHeaderDto();
         reviewHeaderDto.setId(review.getId());
         reviewHeaderDto.setTitle(review.getTitle());
+        reviewHeaderDto.setContents(review.getContents());
         reviewHeaderDto.setWriter(review.getWriter());
         reviewHeaderDto.setLinkURL(review.getLinkURL());
         reviewHeaderDto.setRating(review.getRating());
@@ -33,9 +35,10 @@ public class ReviewHeaderDto {
         return reviewHeaderDto;
     }
     @Builder
-    public ReviewHeaderDto(Long id,String title, String writer, Category category, String linkURL, int rating, LocalDateTime reviewCreatedTime, int likes){
+    public ReviewHeaderDto(Long id,String title, String contents, String writer, Category category, String linkURL, int rating, LocalDateTime reviewCreatedTime, int likes){
         this.id = id;
         this.title=title;
+        this.contents=contents;
         this.writer=writer;
         this.category = category;
         this.linkURL=linkURL;

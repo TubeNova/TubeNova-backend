@@ -46,11 +46,11 @@ public class ReviewController {
     public Page<ReviewHeaderDto> getLikedReviews(@PageableDefault(size = 10, sort = "createdTime", direction = Sort.Direction.DESC) Pageable pageable){
         return Review.pageToHeaderDto(reviewService.getLikedReviews(pageable));
     }
-    @GetMapping("/member/{member_id}")
-    public Page getMemberReviewList(@PathVariable("member_id") Long member_id,
+    @GetMapping("/member/{member_name}")
+    public Page getMemberReviewList(@PathVariable("member_name") String member_name,
                                     @PageableDefault(size = 10, sort = "createdTime", direction = Sort.Direction.DESC)
                                             Pageable pageable, Model model){
-        Page<ReviewHeaderDto> reviewList=reviewService.getMemberReviewList(member_id, pageable);
+        Page<ReviewHeaderDto> reviewList=reviewService.getMemberReviewList(member_name, pageable);
         int blockLimit=10;
         int startPage=(((int)(Math.ceil((double) pageable.getPageNumber()/blockLimit)))-1)
                 * blockLimit+1;

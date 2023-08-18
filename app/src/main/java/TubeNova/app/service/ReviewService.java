@@ -114,18 +114,20 @@ public class ReviewService {
         return Review.pageToHeaderDto(pageReviews);
     }
 
-    public Page<ReviewHeaderDto> getMemberReviewList (Long memberId, Pageable pageable){
+    public Page<ReviewHeaderDto> getMemberReviewList (String memberName, Pageable pageable){
 //        int page = pageable.getPageNumber()-1;
 //        int pageLimit=10;
 //        Page<Review> reviews=
 //                reviewRepository.findAll(PageRequest.of(page, pageLimit, Sort.by(Sort.Direction.DESC,"id")));
 
+        Optional<Member> member = memberRepository.findByName(memberName);
         Page<Review> reviews=
-                reviewRepository.findReviewByMemberId(memberId, pageable);
+                reviewRepository.findReviewByMemberId(member.get().getId(), pageable);
         Page<ReviewHeaderDto> reviewHeaderDtos=reviews.map(review ->
                 new ReviewHeaderDto(
                         review.getId()
                         ,review.getTitle()
+                        ,review.getContents()
                         ,review.getWriter()
                         ,review.getCategory()
                         ,review.getLinkURL()
@@ -148,6 +150,7 @@ public class ReviewService {
                 new ReviewHeaderDto(
                         review.getId()
                         ,review.getTitle()
+                        ,review.getContents()
                         ,review.getWriter()
                         ,review.getCategory()
                         ,review.getLinkURL()
@@ -167,6 +170,7 @@ public class ReviewService {
                 new ReviewHeaderDto(
                         review.getId()
                         ,review.getTitle()
+                        ,review.getContents()
                         ,review.getWriter()
                         ,review.getCategory()
                         ,review.getLinkURL()
@@ -225,7 +229,7 @@ public class ReviewService {
 
     public boolean findLike(Long id, Long memberId) {
         if(memberId == null) return false;    //로그인을 안한 상태이면
-        Optional<Object> findLike = likeRepository.findByReview_IdAndMember_Id(id, memberId);
+        Optional<LikeEntity> findLike = likeRepository.findByReview_IdAndMember_Id(id, memberId);
 
 
         if (findLike.isEmpty()){
