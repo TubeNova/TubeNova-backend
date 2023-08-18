@@ -25,4 +25,6 @@ spring:
     cache: false
 ---
 jwt:
+
   secret: ${SECRET}
+
