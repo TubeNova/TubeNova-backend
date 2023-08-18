@@ -1,19 +1,15 @@
 package TubeNova.app.domain;
 
+import TubeNova.app.dto.review.ReviewDetailDto;
 import TubeNova.app.dto.review.ReviewHeaderDto;
-import com.fasterxml.jackson.annotation.JsonAutoDetect;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import jakarta.persistence.*;
 import lombok.*;
-import org.hibernate.annotations.DynamicInsert;
-import org.hibernate.annotations.DynamicUpdate;
+import org.springframework.data.domain.Page;
 
 import java.util.ArrayList;
 import java.util.List;
-import TubeNova.app.dto.review.ReviewCreateResponseDto;
-import TubeNova.app.dto.review.ReviewDetailDto;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import jakarta.persistence.*;
-import org.springframework.data.domain.Page;
 
 @Entity
 @Getter
@@ -136,6 +132,7 @@ public class Review extends BaseEntity {
                 .likes(r.likes)
                 .category(r.category)
                 .id(r.id)
+                .contents(r.contents)
                 .build());
         return pageHeaderDtos;
     }

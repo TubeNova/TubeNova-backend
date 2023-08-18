@@ -3,6 +3,7 @@ package TubeNova.app.domain;
 import TubeNova.app.dto.member.MemberCreateResponseDto;
 import TubeNova.app.dto.member.MemberDetailDto;
 import TubeNova.app.dto.member.MemberUpdateResponseDto;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Getter;
@@ -21,6 +22,7 @@ import java.util.List;
 @NoArgsConstructor
 @Table(name = "member")
 public class Member {
+    @JsonProperty
     @Id
     @Column(name ="member_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -31,9 +33,10 @@ public class Member {
 
     @Column(nullable = false)
     private String password;
-
+    @JsonProperty
     @Column(nullable = false)
     private String name;
+    @JsonProperty
     @Column
     private Long subscribeCount = 0L;
     @Column(name ="favorite_category")
@@ -95,18 +98,14 @@ public class Member {
     }
 
     public MemberDetailDto memberToDetailDto(){
-        return new MemberDetailDto(id.toString(), name, subscribeCount);
+        return new MemberDetailDto(id, name, subscribeCount);
     }
 
     public static MemberUpdateResponseDto memberToUpdateResponseDto(Member member){
         return new MemberUpdateResponseDto(member.email, member.name, Category.toStringList(member.favoriteCategory));
     }
     public static Page<MemberDetailDto> memberToMemberDetailPageDto(Page<Member> pageMembers){
-        Page<MemberDetailDto> pageMemberDetailDtos = pageMembers.map(m-> MemberDetailDto.builder()
-                .id(m.id.toString())
-                .name(m.name)
-                .subscribeCount(m.subscribeCount)
-                .build());
+        Page<MemberDetailDto> pageMemberDetailDtos = pageMembers.map(m-> new MemberDetailDto(m.id, m.name, m.subscribeCount));
         return pageMemberDetailDtos;
     }
     public static User memberToUser(Member member){

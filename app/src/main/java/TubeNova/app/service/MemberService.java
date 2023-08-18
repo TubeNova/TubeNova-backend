@@ -15,10 +15,8 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -59,7 +57,9 @@ public class MemberService {
     }
     @Transactional
     public MemberCreateResponseDto findMemberByName(String name){
-        return Member.of(memberRepository.findByName(name).get());
+        Member member =
+        memberRepository.findByName(name).get();
+        return Member.of(member);
     }
     //Page<MemberDetailDto>
     //return Member.memberToMemberDetailPageDto(pageMembers);
@@ -71,7 +71,8 @@ public class MemberService {
     }
     @Transactional
     public Page<MemberDetailDto> findMembersOrderBySubscribeCount(Pageable pageable){
-        return Member.memberToMemberDetailPageDto(memberRepository.findAllByOrderBySubscribeCountDesc(pageable));
+        Page<Member> memberPage = memberRepository.findAllByOrderBySubscribeCountDesc(pageable);
+        return Member.memberToMemberDetailPageDto(memberPage);
     }
     public Optional<Member> getCurrentMember(){
         return memberRepository.findById(SecurityUtil.getCurrentMemberId());

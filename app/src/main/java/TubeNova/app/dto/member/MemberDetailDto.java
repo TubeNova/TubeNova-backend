@@ -1,16 +1,14 @@
 package TubeNova.app.dto.member;
 
-import lombok.Builder;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
 
+@Getter
+@AllArgsConstructor
 public class MemberDetailDto {
-    private String id;
+    private Long id;
     private String name;
     private Long subscribeCount;
 
-    @Builder
-    public MemberDetailDto(String id, String name, Long subscribeCount) {
-        this.id = id;
-        this.name = name;
-        this.subscribeCount = subscribeCount;
-    }
+
 }
