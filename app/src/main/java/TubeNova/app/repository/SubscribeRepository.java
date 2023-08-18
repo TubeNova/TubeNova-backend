@@ -10,4 +10,5 @@ import java.util.Optional;
 public interface SubscribeRepository extends JpaRepository<Subscribe, Long> {
     Optional<Subscribe> findByMemberAndTargetId(Member me, Long id);
     List<Subscribe> findByMember(Member member);
+    boolean existsByMember_IdAndTargetId(Long memberId, Long targetId);
 }

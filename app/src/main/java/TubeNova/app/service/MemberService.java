@@ -3,7 +3,6 @@ package TubeNova.app.service;
 import TubeNova.app.domain.Category;
 import TubeNova.app.domain.Member;
 import TubeNova.app.domain.Subscribe;
-import TubeNova.app.dto.member.MemberCreateResponseDto;
 import TubeNova.app.dto.member.MemberDetailDto;
 import TubeNova.app.dto.member.MemberUpdateRequestDto;
 import TubeNova.app.dto.member.MemberUpdateResponseDto;
@@ -33,10 +32,9 @@ public class MemberService {
         return memberRepository.findById(memberId).orElseThrow(()-> new UsernameNotFoundException("로그인 정보가 없습니다."));
     }
 
-    public MemberCreateResponseDto findMemberByUsername(String username) {   //find Entity by username
-        return memberRepository.findByEmail(username)
-                .map(Member::of)
-                .orElseThrow(() -> new RuntimeException("유저 정보가 없습니다."));
+    public MemberDetailDto findMemberByUsername(String username) {   //find Entity by username
+        MemberDetailDto dto =  memberRepository.findByEmail(username).orElseThrow(()-> new UsernameNotFoundException("유저 정보가 존재하지 않습니다.")).memberToDetailDto();
+        return dto.setSubscribed(isSubscribed(SecurityUtil.getCurrentMemberId(), dto.getId()));
     }
     @Transactional
     public MemberUpdateResponseDto updateMember(MemberUpdateRequestDto updateRequestDto) {
@@ -62,8 +60,9 @@ public class MemberService {
     @Transactional
     public MemberDetailDto findMemberByName(String name){
         Member member =
-        memberRepository.findByName(name).get();
-        return member.memberToDetailDto();
+        memberRepository.findByName(name).orElseThrow(()->new UsernameNotFoundException("유저 정보를 찾지 못했습니다."));
+        MemberDetailDto memberDetailDto = member.memberToDetailDto();
+        return memberDetailDto.setSubscribed(isSubscribed(getMyId(), memberDetailDto.getId()));
     }
     //Page<MemberDetailDto>
     //return Member.memberToMemberDetailPageDto(pageMembers);
@@ -71,21 +70,38 @@ public class MemberService {
     public Page<MemberDetailDto> searchMemberByKeyword(String keyword, Pageable pageable){
         Page<Member> pageMembers = memberRepository.findByNameContaining(keyword, pageable);
         Page<MemberDetailDto> pageMemberDto = Member.memberToMemberDetailPageDto(pageMembers);
-        return pageMemberDto;
+        Page<MemberDetailDto> result = pageMemberDto.map(d->d.setSubscribed(isSubscribed(getMyId(), d.getId())));
+        return result;
     }
     @Transactional
     public Page<MemberDetailDto> findMembersOrderBySubscribeCount(Pageable pageable){
         Page<Member> memberPage = memberRepository.findAllByOrderBySubscribeCountDesc(pageable);
-        return Member.memberToMemberDetailPageDto(memberPage);
+        Page<MemberDetailDto> pageMembers = Member.memberToMemberDetailPageDto(memberPage);
+        Page<MemberDetailDto> result = pageMembers.map(d->d.setSubscribed(isSubscribed(getMyId(), d.getId())));
+        return result;
     }
     public Page<MemberDetailDto> findSubscribedMembers(Pageable pageable){
         Member me = getCurrentMember().get();
         List<Subscribe> subscribes = subscribeRepository.findByMember(me);
         List<Long> subscribedMemberIds = subscribes.stream().map(s -> s.getTargetId()).collect(Collectors.toList());
         Page<Member> subscribedMembers = memberRepository.findByIdInList(subscribedMemberIds, pageable);
-        return Member.memberToMemberDetailPageDto(subscribedMembers);
+        Page<MemberDetailDto> pageMembers = Member.memberToMemberDetailPageDto(subscribedMembers);
+        Page<MemberDetailDto> result = pageMembers.map(d->d.setSubscribed(isSubscribed(getMyId(), d.getId())));
+        return result;
     }
     public Optional<Member> getCurrentMember(){
         return memberRepository.findById(SecurityUtil.getCurrentMemberId());
+    }
+    public boolean isSubscribed(Long memberId, Long targetId){
+        if(memberId == null)
+            return false;
+        boolean isSubscribed = subscribeRepository.existsByMember_IdAndTargetId(memberId, targetId);
+        return isSubscribed;
+    }
+    public Long getMyId(){
+        Long myId = SecurityUtil.getCurrentMemberId();
+        if(myId != null)
+            return myId;
+        return null;
     }
 }

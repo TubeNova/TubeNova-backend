@@ -28,7 +28,7 @@ public class MemberController {
     }
 
     @GetMapping("/{username}")
-    public ResponseEntity<MemberCreateResponseDto> findMemberByUsername(@PathVariable String username) {
+    public ResponseEntity<MemberDetailDto> findMemberByUsername(@PathVariable String username) {
         return ResponseEntity.ok(memberService.findMemberByUsername(username));
     }
     @PutMapping("/me/update")
