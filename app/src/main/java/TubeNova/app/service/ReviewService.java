@@ -140,6 +140,7 @@ public class ReviewService {
                         review.getId()
                         ,review.getTitle()
                         ,review.getWriter()
+                        ,review.getMember().getId()
                         ,review.getCategory()
                         ,review.getLinkURL()
                         ,review.getRating()
@@ -152,7 +153,6 @@ public class ReviewService {
                 ));
         return reviewHeaderDtos;
     }
-
     public Page<ReviewHeaderDto> getLatestList (Pageable pageable){
 //        int page = pageable.getPageNumber()-1;
 //        int pageLimit=10;
@@ -166,6 +166,7 @@ public class ReviewService {
                         review.getId()
                         ,review.getTitle()
                         ,review.getWriter()
+                        ,review.getMember().getId()
                         ,review.getCategory()
                         ,review.getLinkURL()
                         ,review.getRating()
@@ -190,6 +191,7 @@ public class ReviewService {
                         review.getId()
                         ,review.getTitle()
                         ,review.getWriter()
+                        ,review.getMember().getId()
                         ,review.getCategory()
                         ,review.getLinkURL()
                         ,review.getRating()
