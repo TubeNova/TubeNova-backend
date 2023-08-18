@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@CrossOrigin
+@CrossOrigin(origins = "http://tubenova.site:3000")
 @Controller
 @RequestMapping("/member")
 @RequiredArgsConstructor
@@ -46,12 +46,14 @@ public class MemberController {
     public ResponseEntity<MemberDetailDto> findMemberById(@PathVariable Long id){
         return ResponseEntity.ok(memberService.findMemberById(id).memberToDetailDto());
     }
-    @GetMapping("search/{keyword}")
-    public Page<MemberDetailDto> searchMemberByKeyword(@PathVariable String keyword, @PageableDefault(size = 20, sort = "id", direction = Sort.Direction.DESC) Pageable pageable){
-        return memberService.searchMemberByKeyword(keyword,pageable);
+    //
+    @GetMapping("/search/{keyword}")
+    public Page<MemberDetailDto> searchMemberByKeyword(@PathVariable String keyword, @PageableDefault(size = 10, sort = "id", direction = Sort.Direction.DESC) Pageable pageable){
+        Page<MemberDetailDto> memberDetailDtos =  memberService.searchMemberByKeyword(keyword,pageable);
+        return memberDetailDtos;
     }
     @GetMapping("/order-by-subcount")
-    public Page<MemberDetailDto> findMembersOrderBySubscribeCount(@PageableDefault(size = 20, sort = "id", direction = Sort.Direction.DESC) Pageable pageable){
+    public Page<MemberDetailDto> findMembersOrderBySubscribeCount(@PageableDefault(size = 20) Pageable pageable){
         return memberService.findMembersOrderBySubscribeCount(pageable);
     }
 }

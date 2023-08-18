@@ -23,10 +23,12 @@ public class ReviewDetailDto {
     private String contents;
     private String writer;
     private Category category;
+    private Long id;
+    private Long memberId;
     private boolean memberLike;
 
     @Builder
-    public ReviewDetailDto(String videoImageUrl, String videoTitle, String channel, String videoDate, String title, String linkURL, int rating, LocalDateTime reviewCreatedTime, int likes, String contents, String writer, Category category) {
+    public ReviewDetailDto(String videoImageUrl, String videoTitle, String channel, String videoDate, String title, String linkURL, int rating, LocalDateTime reviewCreatedTime, int likes, String contents, String writer, Category category, Long id, Long memberId) {
         this.videoImageUrl = videoImageUrl;
         this.videoTitle = videoTitle;
         this.channel = channel;
@@ -39,6 +41,8 @@ public class ReviewDetailDto {
         this.contents = contents;
         this.writer = writer;
         this.category = category;
+        this.id = id;
+        this.memberId=memberId;
     }
 
 }

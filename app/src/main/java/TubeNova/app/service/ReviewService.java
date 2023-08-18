@@ -2,6 +2,7 @@ package TubeNova.app.service;
 
 
 import TubeNova.app.domain.Category;
+import TubeNova.app.domain.LikeEntity;
 import TubeNova.app.domain.Member;
 import TubeNova.app.domain.Review;
 //import TubeNova.app.dto.review.ReviewCreateRequestDto;
@@ -17,6 +18,7 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
@@ -24,6 +26,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Service
@@ -84,6 +87,25 @@ public class ReviewService {
         Page<Review> pageReviews = reviewRepository.findReviewByMemberId(SecurityUtil.getCurrentMemberId(), pageable);
         return Review.pageToHeaderDto(pageReviews);
     }
+
+    public Page<ReviewHeaderDto> getLikedReviews(Pageable pageable){
+        Member me = memberService.getCurrentMember().get();
+        List<LikeEntity> likeList = likeRepository.findByMember(me);
+
+        List<Review> reviews = likeList.stream()
+                .map( l -> l.getReview()).collect(Collectors.toList());
+        try{
+            if(likeList.isEmpty()) {
+                throw new Exception("리뷰가 존재하지 않습니다.");
+            }
+        }
+        catch(Exception e){
+
+        }
+        Page<Review> reviewPage = new PageImpl<Review>(reviews);
+        return Review.pageToHeaderDto(reviewPage);
+    }
+
     public Review findReviewById(Long id){
         Optional<Review> optionalReview = reviewRepository.findById(id);
         if(optionalReview.isPresent()){
@@ -121,11 +143,16 @@ public class ReviewService {
                         review.getId()
                         ,review.getTitle()
                         ,review.getWriter()
+                        ,review.getMember().getId()
                         ,review.getCategory()
                         ,review.getLinkURL()
                         ,review.getRating()
                         ,review.getCreatedTime()
                         ,review.getLikes()
+                        ,review.getVideoImageUrl()
+                        ,review.getVideoTitle()
+                        ,review.getChannel()
+                        ,review.getContents()
                 ));
         return reviewHeaderDtos;
     }
@@ -142,11 +169,17 @@ public class ReviewService {
                         review.getId()
                         ,review.getTitle()
                         ,review.getWriter()
+                        ,review.getMember().getId()
                         ,review.getCategory()
                         ,review.getLinkURL()
                         ,review.getRating()
                         ,review.getCreatedTime()
-                        ,review.getLikes()));
+                        ,review.getLikes()
+                        ,review.getVideoImageUrl()
+                        ,review.getVideoTitle()
+                        ,review.getChannel()
+                        ,review.getContents()
+                ));
         return reviewHeaderDtos;
     }
 
@@ -161,11 +194,17 @@ public class ReviewService {
                         review.getId()
                         ,review.getTitle()
                         ,review.getWriter()
+                        ,review.getMember().getId()
                         ,review.getCategory()
                         ,review.getLinkURL()
                         ,review.getRating()
                         ,review.getCreatedTime()
-                        ,review.getLikes()));
+                        ,review.getLikes()
+                        ,review.getVideoImageUrl()
+                        ,review.getVideoTitle()
+                        ,review.getChannel()
+                        ,review.getContents()
+                ));
         return reviewHeaderDtos;
     }
 
@@ -216,6 +255,9 @@ public class ReviewService {
     }
 
     public boolean findLike(Long id, Long memberId) {
+
+        if(memberId == null) return false;    //로그인을 안한 상태이면
+
         Optional<Object> findLike = likeRepository.findByReview_IdAndMember_Id(id, memberId);
 
 
