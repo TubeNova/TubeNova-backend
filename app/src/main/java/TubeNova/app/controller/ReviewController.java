@@ -121,20 +121,13 @@ public class ReviewController {
     @GetMapping("/details/{id}")
     public ResponseEntity<Object> detailReview(@PathVariable Long id){
         ReviewDetailDto reviewDetail = reviewService.getReviewDetail(id);
-        Long member_id;
-        try{
-            member_id = SecurityUtil.getCurrentMemberId();
-        }catch (Exception e){
-            log.info("Token이 발송되지 않음.");
-            member_id = null;
-        }
-        
-        boolean like = reviewService.findLike(id, member_id);   //좋아요 했으면 1, 아니면 0
+        boolean like = reviewService.findLike(id, SecurityUtil.getCurrentMemberId());   //좋아요 했으면 1, 아니면 0
         reviewDetail.setMemberLike(like);
         return (reviewDetail != null) ?
                 ResponseEntity.status(HttpStatus.OK).body(reviewDetail):
                 ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
     }
+
 
     //리뷰 수정
     @PutMapping("/updates/{id}")
