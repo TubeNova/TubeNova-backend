@@ -5,11 +5,11 @@ import java.util.Arrays;
 import java.util.List;
 
 public enum Category {
-    LIFESTYLE("LifeStyle"), MUSICNDANCE("MusicAndDance"), BEAUTYNFASHION("BeautyAndFashion"), FILMNANIMATION("FilmAndAnimation"),
-    KIDS("Kids"), GAME("Game"), OUTDOOR("Outdoor"), SPORTS("Sports"), NEWSNPOLITICS("NewsAndPolitics"), GOVERNAGENCY("GovernmentAgency"),
-    ENTERTAINMENT("Entertainment"), FOOD("FOOD"), CELEBRITY("Celebrity"), SCIENCE("Science"), ANIMAL("Animal"), HOBBY("Hobby"), VEHICLE("Vehicle"),
-    ECONOMY("Economy"), EDUCATION("Education"), UNTITLED("Untitled");
-
+    LIFESTYLE("LIFESTYLE"), MUSICNDANCE("MUSICNDANCE"), BEAUTYNFASHION("BEAUTYNFASHION"), FILMNANIMATION("FILMNANIMATION"),
+    KIDS("KIDS"), GAME("GAME"), OUTDOOR("OUTDOOR"), SPORTS("SPORTS"), NEWSNPOLITICS("NEWSNPOLITICS"), GOVERNAGENCY("GOVERNAGENCY"),
+    ENTERTAINMENT("ENTERTAINMENT"), FOOD("FOOD"), CELEBRITY("CELEBRITY"), SCIENCE("SCIENCE"), ANIMAL("ANIMAL"), HOBBY("HOBBY"), VEHICLE("Vehicle"),
+    ECONOMY("ECONOMY"), EDUCATION("EDUCATION"), UNTITLED("UNTITLED");
+    
     private String category;
 
     Category(String category){
