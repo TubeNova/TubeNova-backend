@@ -12,6 +12,6 @@ import java.util.Optional;
 @Repository
 public interface LikeRepository extends JpaRepository<LikeEntity, Long> {
 
-    Optional<Object> findByReview_IdAndMember_Id(Long reviewId, Long memberId);
+    Optional<LikeEntity> findByReview_IdAndMember_Id(Long reviewId, Long memberId);
     List<LikeEntity> findByMember(Member member);
 }
