@@ -32,4 +32,8 @@ public class Subscribe {
         SubscribeDto subscribeDto = new SubscribeDto(member.getId(), targetId);
         return subscribeDto;
     }
+
+    public Long getTargetId() {
+        return targetId;
+    }
 }

@@ -18,4 +18,6 @@ public interface MemberRepository extends JpaRepository<Member,Long> {
     boolean existsByEmail(String email);
     Page<Member> findByNameContaining(String keyword, Pageable pageable);
     Page<Member> findAllByOrderBySubscribeCountDesc(Pageable pageable);
+    @Query("select m from Member m where m.id in :ids")
+    Page<Member> findByIdInList(List<Long> ids, Pageable pageable);
 }

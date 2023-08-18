@@ -36,7 +36,7 @@ public class MemberController {
         return ResponseEntity.ok(memberService.updateMember(updateRequestDto));
     }
     @GetMapping("/name/{name}")
-    public ResponseEntity<MemberCreateResponseDto> findMemberByName(@PathVariable String name){
+    public ResponseEntity<MemberDetailDto> findMemberByName(@PathVariable String name){
         return ResponseEntity.ok(memberService.findMemberByName(name));
     }
     @GetMapping("/id/{id}")
@@ -45,7 +45,7 @@ public class MemberController {
     }
     //
     @GetMapping("/search/{keyword}")
-    public @ResponseBody Page<MemberDetailDto> searchMemberByKeyword(@PathVariable String keyword, @PageableDefault(size = 10, sort = "id", direction = Sort.Direction.DESC) Pageable pageable){
+    public @ResponseBody Page<MemberDetailDto> searchMemberByKeyword(@PathVariable String keyword, @PageableDefault(size = 20, sort = "id", direction = Sort.Direction.DESC) Pageable pageable){
         Page<MemberDetailDto> memberDetailDtos =  memberService.searchMemberByKeyword(keyword,pageable);
         return memberDetailDtos;
     }
@@ -53,5 +53,10 @@ public class MemberController {
     public @ResponseBody Page<MemberDetailDto> findMembersOrderBySubscribeCount(@PageableDefault(size = 20) Pageable pageable){
         Page<MemberDetailDto> memberDetailDtos =  memberService.findMembersOrderBySubscribeCount(pageable);
         return memberDetailDtos;
+    }
+    @GetMapping("/subscribed")
+    public @ResponseBody Page<MemberDetailDto> findSubscribedMembers(@PageableDefault(size = 20, sort = "id", direction = Sort.Direction.DESC)Pageable pageable){
+        Page<MemberDetailDto> subscribedMembers = memberService.findSubscribedMembers(pageable);
+        return subscribedMembers;
     }
 }
