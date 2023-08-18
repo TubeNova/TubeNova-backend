@@ -120,7 +120,7 @@ public class Review extends BaseEntity {
                 .reviewCreatedTime(getCreatedTime())
                 .likes(likes)
                 .writer(writer)
-                .memberId(member.getId())
+                .member_id(member.getId())
                 .build();
 
         return dto;
