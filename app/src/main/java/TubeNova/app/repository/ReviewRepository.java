@@ -23,7 +23,7 @@ public interface ReviewRepository extends JpaRepository<Review, Long> {
     List<Review> findTop10ByCreatedTimeBetween(LocalDateTime start, LocalDateTime end, Sort likes);
     Page<Review> findReviewByMemberId(Long memberId, Pageable pageable);
     List<Review> findTop10ByCategoryAndCreatedTimeBetween(Category category, LocalDateTime start, LocalDateTime end, Sort likes);
-
+    @Query("SELECT r from Review r where r.title like %:keyword% or r.contents like %:keyword%")
     Page<Review> findByTitleContaining(String keyword, Pageable pageable);  //findBy'Column'Containing 을 쓰면 컬럼내에 해당된 것들을 찾아준다.
     @Query("SELECT r FROM Review r where r.category in :categories")
     Page<Review> findByFavoriteCategories(List<Category> categories, Pageable pageable);
